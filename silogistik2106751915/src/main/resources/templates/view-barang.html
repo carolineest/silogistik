@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <title>View Barang</title>
+</head>
+
+<body>
+  <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+  <div class="container">
+    <div class="text-center pt-5">
+      <h2 clasa>Detail Barang</h2>
+    </div>
+    <div class="text-center m-3">
+      <a type="button" class="btn btn-primary btn-md" th:href="@{'/barang/' + ${barang.sku} + '/ubah'}">Ubah Barang</a>
+    </div>
+    <div class="row justify-content-center">
+      <div class="card" style="width: 30rem;">
+        <div class="card-body">
+          <div>
+            <p class="card-text m-0"><b>Merk</b></p>
+            <p class="card-text" th:text="${barang.merk}"></p>
+
+            <p class="card-text m-0"><b>SKU</b></p>
+            <p class="card-text" th:text="${barang.sku}"></p>
+
+            <p class="card-text m-0"><b>Tipe Barang</b></p>
+            <p class="card-text">
+              <span th:switch="${barang.tipeBarang}">
+                <span th:case="1">Produk Elektronik</span>
+                <span th:case="2">Pakaian & Aksesoris</span>
+                <span th:case="3">Makanan & Minuman</span>
+                <span th:case="4">Kosmetik</span>
+                <span th:case="5">Perlengkapan Rumah</span>
+
+            <p class="card-text m-0"><b>Total Stok</b></p>
+            <!-- <p class="card-text" th:text="${barang.sku}"></p> -->
+            <td>
+              <p class="card-text" th:with="totalStok=0">
+                  <span th:each="barang : ${barang.gudangBarang}" th:with="totalStok=${totalStok + barang.stok}"></span>
+                  <span th:text="${totalStok}"></span>
+              </p>
+
+            <p class="card-text m-0"><b>Harga</b></p>
+            <p class="card-text" th:text="${barang.hargaBarang}"></p>
+
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Daftar Gudang</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <!-- <tr th:each="penulis, iterationStatus: ${bukuDTO.listPenulis}">
+                    <td th:text="${penulis.namaPenulis}"></td>
+                  </tr> -->
+                </tbody>
+              </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center m-3">
+      <a type="button" class="btn btn-secondary btn-md" href="/barang">Kembali</a>
+    </div>
+  </div>
+</body>
+
+</html>

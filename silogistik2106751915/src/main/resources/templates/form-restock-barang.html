@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <title>View Gudang</title>
+</head>
+
+<body>
+  <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+  <div class="container">
+    <div class="text-center pt-5">
+      <h2>Restock Gudang</h2>
+    </div>
+    <div class="text-center m-3">
+    </div>
+    <div class="row justify-content-center">
+      <div class="card" style="width: 30rem;">
+        <div class="card-body">
+          <div>
+            <p class="card-text m-0"><b>Nama Gudang</b></p>
+            <p class="card-text" th:text="${gudang.namaGudang}"></p>
+
+            <p class="card-text m-0"><b>Alamat Gudang</b></p>
+            <p class="card-text" th:text="${gudang.alamatGudang}"></p>
+
+            <!-- <form th:action="@{'/gudang/' + ${idGudang} + '/restock-barang'}" th:object="${gudangDTO}" method="POST"> -->
+            <!-- <form th:action="@{/gudang/{idGudang}/restock-barang(id=${gudangDTO.idGudang})}" th:object="${gudangDTO}" method="POST"> -->
+            <form th:action="@{'/gudang/' + ${idGudang} + '/restock-barang'}" th:object="${restockGudangRequestDTO}" method="POST">
+
+              <!-- <input class="form-control" type="hidden" th:field="*{idGudang}" /> -->
+              <!-- <input class="form-control" type="hidden" th:field="*{namaGudang}" />
+              <input class="form-control" type="hidden" th:field="*{alamatGudang}" /> -->
+
+            <th class="d-flex justify-content-end">
+              <button class="btn btn-primary" type="submit" name="addRow">+ Tambah Barang</button>
+            </th>
+
+              <!-- Daftar barang dengan dropdown dan kuantitas -->
+              <table class="table">
+
+                  <thead>
+                      <th>Barang</th>
+                      <th>Kuantitas</th>
+                  </thead>
+
+                  <tbody>
+                    <tr th:each="barang, iterationStatus : *{listBarang}">
+                      <td th:text="${iterationStatus.count}"></td>
+                      <!-- <input class="form-control" type="hidden" th:field="*{listBarangExisting[__${iterationStatus.index}__].sku}"/> -->
+                        <td>
+                            <!-- <select th:field="*{listBarangExisting[__${iterationStatus.index}__].sku}"
+                                class="form-control">
+                                <option value="">Pilih Barang</option>
+                                <th:block th:each="barang : ${listBarangExisting}">
+                                    <option th:value="${barang.sku}"
+                                        th:text="${barang.merk}"></option>
+                                </th:block>
+                            </select> -->
+                            <select th:field="*{listBarang[__${iterationStatus.index}__].sku}" class="form-control">
+                              <option value="">Pilih Barang</option>
+                              <!-- Loop melalui daftar barang yang ada -->
+                              <th:block th:each="barangExisting : ${listBarangExisting}">
+                                  <option th:value="${barangExisting.sku}" th:text="${barangExisting.merk}"></option>
+                              </th:block>
+                          </select>
+                        </td>
+                        <td>
+                            <input th:field="*{listBarang[__${iterationStatus.index}__].stok}"
+                                type="number" class="form-control" min="1" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <button class="btn btn-primary btn-simpan" type="submit">Simpan</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center m-3">
+      <a type="button" class="btn btn-secondary btn-md" href="/gudang">Kembali</a>
+    </div>
+  </div>
+</body>
+
+</html>

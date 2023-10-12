@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+    <title>Home</title>
+</head>
+
+<body>
+<nav th:replace="~{fragments/navbar :: navbar}"></nav>
+  <div class="container text-center">
+        <div class="row pt-5 pb-2">
+            <div>
+              <img src="https://cdn-icons-png.flaticon.com/512/8750/8750023.png" width="320" height="300">
+            </div>
+            <h1>
+              <i class="bi bi-journal-code"></i>
+                  SILOGISTIK
+              <i class="bi bi-journal-code"></i>
+            </h1>
+        </div>
+    <div class="row">
+        <div class="col">
+            <a type="button" class="btn btn-primary m-2" href="/gudang">Gudang</a>
+            <a type="button" class="btn btn-primary m-2" href="/barang">Barang</a>
+            <a type="button" class="btn btn-primary m-2" href="">Permintaan Pengiriman</a>
+            <a type="button" class="btn btn-primary m-2" href="">Karyawan</a>
+        </div>
+    </div>
+    <!-- <div class="row">
+      <div class="col">
+        <a type="button" class="btn btn-primary m-2" href="/penerbit/create">Tambah Penerbit</a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <a type="button" class="btn btn-primary m-2" href="/penulis/create">Tambah Penulis</a>
+      </div>
+    </div> -->
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+
+    <!-- Tautan ke file JavaScript DataTables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+    <style>
+        .table-header {
+            background-color: #373737; /* Ganti dengan warna biru primary yang Anda inginkan */
+            color: white; /* Warna teks pada header */
+        }
+    </style>
+
+    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+    <title>View All Gudang</title>
+</head>
+
+<body>
+    <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+    <div class="container">
+        <div class="text-center pt-5">
+            <h2>Daftar Gudang</h2>
+        </div>
+        <!-- Membuat table serta heading-nya -->
+        <table id="table-gudang" class="table">
+            <thead class="table-header">
+                <tr>
+                    <th>#</th>
+                    <th>Nama</th>
+                    <th>Alamat Gudang</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+            <!-- Mengambil buku -->
+            <tr th:each="gudang, iteratedList: ${listGudang}">
+                <!-- Menampilkan nomor -->
+                <td th:text="${iteratedList.index + 1}"></td>
+                <!-- Menampilkan nama -->
+                <td th:text="${gudang.namaGudang}"></td>
+                <!-- Menampilkan alamat gudang -->
+                <td th:text="${gudang.alamatGudang}"></td>
+                <!-- Menampilkan action button -->
+                <td>
+                    <a type="button" class="btn btn-md btn-primary"
+                        th:href="@{'/gudang/' + ${gudang.idGudang}}">Detail</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Tautan ke file JavaScript DataTables -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#table-gudang').DataTable({
+                "paging": true,
+                "pageLength": 5, // Menampilkan 5 item per halaman ketika dibuka pertama kali
+                "lengthMenu": [5, 10, 20], // Pilihan jumlah entri per halaman
+                "columnDefs": [{
+                    "targets": 3, // Menetapkan target kolom (Action)
+                    "orderable": false // Menonaktifkan fitur pengurutan pada kolom target (Action)
+                    }]
+                });
+            }
+        );
+    </script>
+</body>
+
+</html>

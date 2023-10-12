@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+    <title>Form Update Barang</title>
+</head>
+
+<body>
+    <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+<div class="container">
+    <div class="card m-4 p-4">
+        <div class="card-body">
+            <div class="justify-content-center">
+                <h2>Ubah Barang </h2>
+                <br>
+                <form th:action="@{/barang/{sku}/ubah}" th:object="${barangDTO}" method="POST">
+
+                    SKU:
+                    <input class="form-control" type="text" th:field="*{sku}" th:readonly="true" th:value="${barangDTO.sku}"/>
+                    <br>
+
+                    Merk Barang: <br>
+                    <input class="form-control" type="text" th:field="*{merk}" /><br>
+
+                    <!-- <span th:switch="${barangDTO.tipeBarang}">
+                        <span th:case="1">Produk Elektronik</span>
+                        <span th:case="2">Pakaian & Aksesoris</span>
+                        <span th:case="3">Makanan & Minuman</span>
+                        <span th:case="4">Kosmetik</span>
+                        <span th:case="5">Perlengkapan Rumah</span>
+                    </span>
+                    <br><br> -->
+
+                    <!-- <label for="tipeBarang">Tipe Barang:</label>
+                        <select class="form-control" id="tipeBarang" name="tipeBarang" th:field="*{tipeBarang}">
+                            <option value="1">Produk Elektronik</option>
+                            <option value="2">Pakaian & Aksesoris</option>
+                            <option value="3">Makanan & Minuman</option>
+                            <option value="4">Kosmetik</option>
+                            <option value="5">Perlengkapan Rumah</option>
+                        </select> -->
+                    <label for="tipeBarang">Tipe Barang:</label>
+                    <select class="form-control" id="tipeBarang" name="tipeBarang"  th:readonly="true" th:field="*{tipeBarang}">
+                        <option value="1">Produk Elektronik</option>
+                        <option value="2">Pakaian & Aksesoris</option>
+                        <option value="3">Makanan & Minuman</option>
+                        <option value="4">Kosmetik</option>
+                        <option value="5">Perlengkapan Rumah</option>
+                    </select>
+                    <br> <br>
+
+                    Harga: <br>
+                    <input class="form-control" type="text" th:field="*{hargaBarang}" />
+                    <br><br>
+
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                    <a class="btn btn-primary" href="/">Home</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>
