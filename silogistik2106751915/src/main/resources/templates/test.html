@@ -26,36 +26,50 @@
             <p class="card-text m-0"><b>Alamat Gudang</b></p>
             <p class="card-text" th:text="${gudang.alamatGudang}"></p>
 
-            <form th:action="@{/gudang/{id}/restock-barang(id=${restockGudangRequestDTO.idGudang})}" th:object="${restockGudangRequestDTO}" method="POST">
+            <!-- <form th:action="@{'/gudang/' + ${idGudang} + '/restock-barang'}" th:object="${gudangDTO}" method="POST"> -->
+            <!-- <form th:action="@{/gudang/{idGudang}/restock-barang(id=${gudangDTO.idGudang})}" th:object="${gudangDTO}" method="POST"> -->
+            <form th:action="@{'/gudang/' + ${idGudang} + '/restock-barang'}" th:object="${restockGudangRequestDTO}" method="POST">
 
-              <input class="form-control" type="hidden" th:field="*{idGudang}" />
+              <!-- <input class="form-control" type="hidden" th:field="*{idGudang}" /> -->
               <!-- <input class="form-control" type="hidden" th:field="*{namaGudang}" />
               <input class="form-control" type="hidden" th:field="*{alamatGudang}" /> -->
+
               <th class="d-flex justify-content-end">
                 <button class="btn btn-primary" type="submit" name="addRow">+ Tambah Barang</button>
+                <!-- <a class="btn btn-primary" type="submit" name="addRow" th:href="@{'/gudang/' + ${idGudang} + '/restock-barang'}">+ Tambah Barang</a> -->
               </th>
 
+              <!-- Daftar barang dengan dropdown dan kuantitas -->
               <table class="table">
 
                   <thead>
-                      <th>#</th>
                       <th>Barang</th>
                       <th>Kuantitas</th>
                   </thead>
 
                   <tbody>
-                    <tr th:each="barang, iterationStatus : *{listBarang}">
+                    <tr th:each="barang, iterationStatus : ${listGudangBarang}">
                       <td th:text="${iterationStatus.count}"></td>
+                      <!-- <input class="form-control" type="hidden" th:field="*{listBarangExisting[__${iterationStatus.index}__].sku}"/> -->
                         <td>
-                            <select th:field="*{listBarang[__${iterationStatus.index}__].sku}" class="form-control">
+                            <!-- <select th:field="*{listBarangExisting[__${iterationStatus.index}__].sku}"
+                                class="form-control">
+                                <option value="">Pilih Barang</option>
+                                <th:block th:each="barang : ${listBarangExisting}">
+                                    <option th:value="${barang.sku}"
+                                        th:text="${barang.merk}"></option>
+                                </th:block>
+                            </select> -->
+                            <select th:field="${listGudangBarang[__${iterationStatus.index}__].sku}" class="form-control">
                               <option value="">Pilih Barang</option>
+                              <!-- Loop melalui daftar barang yang ada -->
                               <th:block th:each="barangExisting : ${listBarangExisting}">
                                   <option th:value="${barangExisting.sku}" th:text="${barangExisting.merk}"></option>
                               </th:block>
                           </select>
                         </td>
                         <td>
-                            <input th:field="*{listBarang[__${iterationStatus.index}__].stok}"
+                            <input th:field="${listGudangBarang[__${iterationStatus.index}__].stok}"
                                 type="number" class="form-control" min="1" />
                         </td>
                     </tr>

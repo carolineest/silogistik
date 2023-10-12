@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+    <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+    <title>Cari Barang</title>
+</head>
+
+<body>
+    <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+    <div class="container">
+        <div class="text-center pt-5">
+            <h2>Cari Barang</h2>
+        </div>
+        <div class="text-center m-3">
+        </div>
+        <div class="row justify-content-center">
+            <div class="card" style="width: 30rem;">
+                <div class="card-body">
+                    <div>
+                        <form th:action="@{/gudang/cari-barang?sku={skuBarang}(skuBarang=${readBarangResponseDTO.idGudang})}"
+                            th:object="${readBarangResponseDTO}" method="GET">
+                            <div class="form-group">
+                                <select id="barang" name="barang" class="form-control">
+                                    <option value="">Pilih Barang</option>
+                                    <th:block th:each="barang : ${listBarang}">
+                                        <option th:value="${barang.sku}" th:text="${barang.merk}"></option>
+                                    </th:block>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Cari</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center m-3">
+            <a type="button" class="btn btn-secondary btn-md" href="/gudang">Kembali</a>
+        </div>
+    </div>
+</body>
+
+</html>

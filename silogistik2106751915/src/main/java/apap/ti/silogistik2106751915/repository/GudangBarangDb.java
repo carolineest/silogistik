@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GudangBarangDb extends JpaRepository<GudangBarang, BigInteger> {
-     GudangBarang getByIdGudangAndSkuBarang(Gudang idGudang, Barang skuBarang);
+    Optional<GudangBarang> getByIdGudangAndSkuBarang(Gudang idGudang, Barang skuBarang);
 
-    Optional<GudangBarang> getByIdGudangAndSkuBarang(BigInteger idGudang, String sku);
+    // Optional<GudangBarang> getByIdGudangAndSkuBarang(BigInteger idGudang, String sku);
 }

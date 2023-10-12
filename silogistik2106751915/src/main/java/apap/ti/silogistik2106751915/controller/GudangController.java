@@ -87,7 +87,10 @@ public class GudangController {
         List<Barang> listBarangExisting = barangService.getAllBarang();
 
         var restockGudangRequestDTO = new RestockGudangRequestDTO();
+        restockGudangRequestDTO.setIdGudang(idGudang);
+
         model.addAttribute("restockGudangRequestDTO", restockGudangRequestDTO);
+        model.addAttribute("listGudangBarang", restockGudangRequestDTO.getListBarang());
 
         Gudang gudang = gudangService.getGudangById(idGudang);
         model.addAttribute("gudang", gudang);
@@ -97,77 +100,7 @@ public class GudangController {
         return "form-restock-barang";
     }
 
-    // @PostMapping(value = "/gudang/{idGudang}/restock-barang", params = { "addRow" })
-    // public String addRowGudangBarang(
-    //     @ModelAttribute CreateGudangRequestDTO createGudangRequestDTO,
-    //     Model model
-    //     ) {
-    //         if (createGudangRequestDTO.getGudangBarang() == null || createGudangRequestDTO.getGudangBarang().size() == 0) {
-    //             createGudangRequestDTO.setGudangBarang(new ArrayList<>());
-    //         }
-
-    //         // Memasukkan Penulis baru (kosong) ke list, untuk dirender sebagai row baru.
-    //         // createBarangRequestDTO.getListGudangBarang().add(new GudangBarang());
-
-    //         GudangBarang gudangBarangTemp = new GudangBarang();
-
-    //         Gudang gudangTemp = gudangService.getGudangById(createGudangRequestDTO.getIdGudang());
-
-    //         gudangBarangTemp.setIdGudang(gudangTemp);
-
-    //         createGudangRequestDTO.getGudangBarang().add(gudangBarangTemp);
-
-    //         // Kirim list penerbit penulis untuk menjadi pilihan pada dropdown.
-            
-    //         model.addAttribute("listBarangExisting", barangService.getAllBarang());
-
-    //         model.addAttribute("gudangDTO", createGudangRequestDTO);
-
-    //         return "form-restock-barang";
-    // }
-
-    @PostMapping(value = "/gudang/{idGudang}/restock-barang", params = { "addRow" })
-    public String addGudangBarang(@PathVariable("idGudang") BigInteger idGudang, @Valid
-        @ModelAttribute RestockGudangRequestDTO restockGudangRequestDTO, BindingResult bindingResult,
-        Model model
-        ) {
-              if (bindingResult.hasErrors()) {
-                List<ObjectError> errors = bindingResult.getAllErrors();
-                StringBuilder errorMessage = new StringBuilder();
-                for (ObjectError error : errors) {
-                    errorMessage.append(error.getDefaultMessage()).append("\n");
-                }
-                model.addAttribute("errorMessage", errorMessage.toString());
-                return "error-view";
-            }
-
-            if (restockGudangRequestDTO.getListBarang() == null || restockGudangRequestDTO.getListBarang().isEmpty()) {
-                model.addAttribute("errorMessage", "Tidak ada barang yang di restock");
-                return "error-view";            
-            }
-
-            gudangBarangService.updateGudangBarang(restockGudangRequestDTO, idGudang);
-
-            model.addAttribute("gudang", gudangService.getGudangById(idGudang));
-
-            return "success-restock-gudang";
-    }
-
-//     @PostMapping("/gudang/{idGudang}/restock-barang", params = "{addRow}")
-//     public String addRowGudangBarang(@PathVariable("idGudang") BigInteger idGudang, @ModelAttribute CreateGudangRequestDTO createGudangRequestDTO, Model model) {
-//         var gudang = gudangMapper.createGudangRequestDTOToGudang(createGudangRequestDTO);
-
-//         //Memanggil Service createPenerbit
-//         gudangService.updateGudangBarang(gudang);
-
-//         //Menambah penerbit ke model thymeleaf
-//         model.addAttribute("gudang", createGudangRequestDTO);
-
-//         return "success-restock-gudang";
-//     }
-// }
-
-@PostMapping(value = "/gudang/{idGudang}/restock-barang", params = "{addRow}")
+    @PostMapping(value = "/gudang/{idGudang}/restock-barang", params = {"addRow"})
     public String addRowGudangBarang(@PathVariable("idGudang") BigInteger idGudang, @ModelAttribute RestockGudangRequestDTO restockGudangRequestDTO, Model model) {
          if (restockGudangRequestDTO.getListBarang() == null || restockGudangRequestDTO.getListBarang().size() == 0) {
                restockGudangRequestDTO.setListBarang(new ArrayList<>());         
@@ -178,8 +111,45 @@ public class GudangController {
         model.addAttribute("gudang", gudang);
 
         model.addAttribute("listBarangExisting", barangService.getAllBarang());
+        model.addAttribute("listGudangBarang", restockGudangRequestDTO.getListBarang());
         model.addAttribute("restockGudangRequestDTO", restockGudangRequestDTO);
 
         return "form-restock-barang";
+    }
+
+    @PostMapping(value = "/gudang/{idGudang}/restock-barang")
+    public String addGudangBarang(@PathVariable("idGudang") BigInteger idGudang, @Valid
+        @ModelAttribute RestockGudangRequestDTO restockGudangRequestDTO, BindingResult bindingResult,
+        Model model
+        ) {
+            if (bindingResult.hasErrors()) {
+            List<ObjectError> errors = bindingResult.getAllErrors();
+            StringBuilder errorMessage = new StringBuilder();
+            for (ObjectError error : errors) {
+                errorMessage.append(error.getDefaultMessage()).append("\n");
+            }
+            model.addAttribute("errorMessage", errorMessage.toString());
+            return "error-view";
+        }
+
+        // if (restockGudangRequestDTO.getListBarang() == null || restockGudangRequestDTO.getListBarang().isEmpty()) {
+        //     model.addAttribute("errorMessage", "Tidak ada barang untuk direstock");
+        //     return "error-view";            
+        // }
+
+        gudangBarangService.updateGudangBarang(restockGudangRequestDTO, idGudang);
+
+        model.addAttribute("gudang", gudangService.getGudangById(idGudang));
+
+        return "success-restock-gudang";
+    }
+
+    @GetMapping("/gudang/cari-barang")
+    public String cariBarang(Model model) {
+        var listBarang = barangService.getAllBarang();
+
+        model.addAttribute("listBarang", listBarang);
+
+        return "view-cari-barang";
     }
 }
