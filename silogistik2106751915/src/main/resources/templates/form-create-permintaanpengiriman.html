@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <title>Form Add Permintaan Pengiriman</title>
+</head>
+
+<body>
+  <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+  <div class="container">
+    <div class="card m-4 p-4">
+      <div class="card-body">
+        <div class="justify-content-center">
+          <h2>Buat Permintaan Pengiriman</h2>
+          <br>
+          <form th:action="@{/permintaan-pengiriman/tambah}" th:object="${permintaanPengirimanDTO}" method="POST">
+            <label>Karyawan Bertugas:</label>
+            <select class="form-control" id="karyawan" name="karyawan" th:field="*{karyawan.idKaryawan}">
+                <option value="" th:disabled="true" th:selected="true">--Pilih Karyawan--</option>
+                <option th:each="karyawan : ${listKaryawan}" 
+                        th:value="${karyawan.idKaryawan}" 
+                        th:text="${karyawan.namaKaryawan}">
+                </option>
+            </select>
+            <br> <br>
+            
+            Nama Penerima: <br>
+            <input class="form-control" type="text" th:field="*{namaPenerima}" />
+            <br><br>
+
+            Alamat Penerima: <br>
+            <input class="form-control" type="text" th:field="*{alamatPenerima}" />
+            <br><br>
+
+            Tanggal Pengiriman: <br>
+            <input class="form-control" type="date" th:field="*{tanggalPengiriman}" th:value="${#dates.format(tanggalPengiriman, 'yyyy-MM-dd')}" />            
+            <br><br>
+
+            <label>Jenis Layanan:</label>
+            <select class="form-control" id="" name="" th:field="*{jenisLayanan}">
+                <option value="1">Same Day</option>
+                <option value="2">Kilat</option>
+                <option value="3">Reguler</option>
+                <option value="4">Hemat</option>
+            </select>
+            <br> <br>
+
+            Biaya Pengiriman: <br>
+            <input class="form-control" type="text" th:field="*{biayaPengiriman}" />
+            <br><br>
+
+            <button class="btn btn-primary" type="submit">Submit</button>
+            <a class="btn btn-primary" href="/">Home</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

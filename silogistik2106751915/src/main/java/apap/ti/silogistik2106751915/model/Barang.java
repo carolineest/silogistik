@@ -35,4 +35,7 @@ public class Barang {
 
     @OneToMany(mappedBy = "skuBarang")
     private List<GudangBarang> gudangBarang;
+
+    @OneToMany(mappedBy = "skuBarang")
+    private List<PermintaanPengirimanBarang> permintaanPengirimanBarang;
 }

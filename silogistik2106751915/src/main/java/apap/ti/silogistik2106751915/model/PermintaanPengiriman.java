@@ -10,6 +10,7 @@ import lombok.Setter;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,14 +21,14 @@ import java.util.Date;
 public class PermintaanPengiriman {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_permintaan_pengiriman")
     private BigInteger idPermintaanPengiriman;
 
     @NotNull
     @Column(name = "nomor_pengiriman", nullable = false)
     private String nomorPengiriman;
 
-    @NotNull
-    @Column(name = "is_cancelled", nullable = false)
+    @Column(name = "is_cancelled")
     private Boolean isCancelled;
 
     @NotNull
@@ -57,4 +58,7 @@ public class PermintaanPengiriman {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_karyawan", referencedColumnName = "idKaryawan")
     private Karyawan karyawan;
+
+    @OneToMany(mappedBy = "idPermintaanPengiriman")
+    private List<PermintaanPengirimanBarang> permintaanPengirimanBarang;
 }

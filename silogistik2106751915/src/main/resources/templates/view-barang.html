@@ -12,7 +12,7 @@
   <nav th:replace="~{fragments/navbar :: navbar}"></nav>
   <div class="container">
     <div class="text-center pt-5">
-      <h2 clasa>Detail Barang</h2>
+      <h2>Detail Barang</h2>
     </div>
     <div class="text-center m-3">
       <a type="button" class="btn btn-primary btn-md" th:href="@{'/barang/' + ${barang.sku} + '/ubah'}">Ubah Barang</a>
@@ -37,30 +37,35 @@
                 <span th:case="5">Perlengkapan Rumah</span>
 
             <p class="card-text m-0"><b>Total Stok</b></p>
-            <!-- <p class="card-text" th:text="${barang.sku}"></p> -->
-            <td>
+            <!-- <p class="card-text" th:text="${barang.gudangBarang.stok}"></p> -->
               <p class="card-text" th:with="totalStok=0">
-                  <span th:each="barang : ${barang.gudangBarang}" th:with="totalStok=${totalStok + barang.stok}"></span>
+                  <span th:each="elem : ${barang.gudangBarang}" 
+                        th:with="totalStok=${totalStok + elem.stok}"></span>
                   <span th:text="${totalStok}"></span>
               </p>
 
             <p class="card-text m-0"><b>Harga</b></p>
             <p class="card-text" th:text="${barang.hargaBarang}"></p>
 
+            <p class="card-text m-0"><b>Daftar Gudang</b></p>
             <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Daftar Gudang</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <!-- <tr th:each="penulis, iterationStatus: ${bukuDTO.listPenulis}">
-                    <td th:text="${penulis.namaPenulis}"></td>
-                  </tr> -->
-                </tbody>
-              </table>
-
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Nama Gudang</th>
+                  <th>Alamat Gudang</th>
+                  <th>Stok</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="gudang, iteratedList: ${barang.gudangBarang}">
+                  <td th:text="${iteratedList.index + 1}"></td>
+                  <td th:text="${gudang.idGudang.namaGudang}"></td>
+                  <td th:text="${gudang.idGudang.alamatGudang}"></td>
+                  <td th:text="${gudang.stok}"></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

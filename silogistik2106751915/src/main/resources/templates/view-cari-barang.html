@@ -20,18 +20,39 @@
             <div class="card" style="width: 30rem;">
                 <div class="card-body">
                     <div>
-                        <form th:action="@{/gudang/cari-barang?sku={skuBarang}(skuBarang=${readBarangResponseDTO.idGudang})}"
-                            th:object="${readBarangResponseDTO}" method="GET">
+                        <form th:action="@{/gudang/cari-barang}" method="GET">
                             <div class="form-group">
                                 <select id="barang" name="barang" class="form-control">
                                     <option value="">Pilih Barang</option>
-                                    <th:block th:each="barang : ${listBarang}">
-                                        <option th:value="${barang.sku}" th:text="${barang.merk}"></option>
+                                    <th:block th:each="itemBarang : ${listBarang}">
+                                        <option th:value="${itemBarang.sku}" th:text="${itemBarang.merk}"></option>
                                     </th:block>
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-primary">Cari</button>
                         </form>
+                    </div>
+
+                    <div>
+                        <h3>Data Gudang</h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nama Gudang</th>
+                                    <th>Alamat Gudang</th>
+                                    <th>Stok Barang</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="elem, iterStat : ${gudangBarang}">
+                                    <td th:text="${iterStat.index + 1}"></td>
+                                    <td th:text="${elem.idGudang.namaGudang}"></td>
+                                    <td th:text="${elem.idGudang.alamatGudang}"></td>
+                                    <td th:text="${elem.stok}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

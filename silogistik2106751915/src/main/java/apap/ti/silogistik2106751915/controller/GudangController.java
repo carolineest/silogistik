@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -145,11 +146,29 @@ public class GudangController {
     }
 
     @GetMapping("/gudang/cari-barang")
-    public String cariBarang(Model model) {
+    public String cariBarang(@RequestParam(value = "barang", required = false) String skuBarang, Model model) {
         var listBarang = barangService.getAllBarang();
-
         model.addAttribute("listBarang", listBarang);
+
+        if (skuBarang != null){
+            var gudangBarang = gudangBarangService.getGudangBarangBySku(skuBarang);
+            model.addAttribute("gudangBarang", gudangBarang);
+            System.out.println("*************" + gudangBarang);
+        }
 
         return "view-cari-barang";
     }
+
+    // @GetMapping("/gudang/cari-barang/{sku}")
+    // public String cariBarangShow(@PathVariable("sku") String sku, Model model) {
+    //     var listBarang = barangService.getAllBarang();
+
+    //     model.addAttribute("listBarang", listBarang);
+
+    //     var gudangBarang = gudangBarangService.getGudangBarangBySku(sku);
+
+    //     model.addAttribute("gudangBarang", gudangBarang);
+
+    //     return "form-restock-barang";
+    // }
 }

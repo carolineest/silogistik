@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
+  <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
+  <title>View Permintaan Pengiriman</title>
+</head>
+
+<body>
+  <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+  <div class="container">
+    <div class="text-center pt-5">
+      <h2>Detail Permintaan Pengiriman</h2>
+    </div>
+    <div class="text-center m-3">
+      <a type="button" class="btn btn-primary btn-md" th:href="@{'/permintaan-pengiriman/' + ${permintaanPengiriman.idPermintaanPengiriman} + '/cancel'}">Cancel Permintaan</a>
+    </div>
+    <div class="row justify-content-center">
+      <div class="card" style="width: 30rem;">
+        <div class="card-body">
+          <div>
+            <p class="card-text m-0"><b>No. Permintaan Pengiriman</b></p>
+            <p class="card-text" th:text="${permintaanPengiriman.nomorPengiriman}"></p>
+
+            <p class="card-text m-0"><b>Waktu Permintaan</b></p>
+            <p class="card-text" th:text="${permintaanPengiriman.waktuPermintaan}"></p>
+
+            <p class="card-text m-0"><b>Karyawan Bertugas</b></p>
+            <p class="card-text" th:text="${permintaanPengiriman.karyawan}"></p>
+
+            <p class="card-text m-0"><b>Waktu Pengiriman</b></p>
+            <p class="card-text" th:text="${permintaanPengiriman.tanggalPengiriman}"></p>
+
+            <p class="card-text m-0"><b>Nama Penerima</b></p>
+            <p class="card-text" th:text="${permintaanPengiriman.namaPenerima}"></p>
+
+            <p class="card-text m-0"><b>Alamat Penerima</b></p>
+            <p class="card-text" th:text="${permintaanPengiriman.alamatPenerima}"></p>
+
+            <p class="card-text m-0"><b>Jenis Layanan</b></p>
+            <p class="card-text" th:text="${permintaanPengiriman.jenisLayanan}"></p>
+
+            <p class="card-text m-0"><b>Biaya Pengiriman</b></p>
+            <p class="card-text" th:text="${permintaanPengiriman.biayaPengiriman}"></p>
+
+            <p class="card-text m-0"><b>Daftar Barang Dipesan</b></p>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>SKU</th>
+                  <th>Merk</th>
+                  <th>Kuantitas Pesanan</th>
+                  <th>Total Harga</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="elem, iteratedList: ${permintaanPengiriman.permintaanPengirimanBarang}">
+                  <td th:text="${iteratedList.index + 1}"></td>
+                  <td th:text="${elem.skuBarang.sku}"></td>
+                  <td th:text="${elem.skuBarang.merk}"></td>
+                  <td th:text="${elem.kuantitasPesanan}"></td>
+                  <td>
+                    <span th:with="totalHarga=0">
+                        <span th:each="item : ${permintaanPengiriman.permintaanPengirimanBarang}">
+                            <span th:with="totalHarga=${totalHarga + item.skuBarang.hargaBarang}"></span>
+                        </span>
+                        <span th:text="${totalHarga}"></span>
+                    </span>
+                </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center m-3">
+      <a type="button" class="btn btn-secondary btn-md" href="/permintaan-pengiriman">Kembali</a>
+    </div>
+  </div>
+</body>
+
+</html>

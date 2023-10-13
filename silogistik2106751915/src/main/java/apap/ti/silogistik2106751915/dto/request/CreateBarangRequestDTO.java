@@ -7,10 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import apap.ti.silogistik2106751915.model.GudangBarang;
-
 import java.math.BigInteger;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor

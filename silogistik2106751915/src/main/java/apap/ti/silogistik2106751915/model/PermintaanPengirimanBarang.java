@@ -18,14 +18,15 @@ import java.math.BigInteger;
 public class PermintaanPengirimanBarang {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false, unique = true)
     private BigInteger idPermintaanPengirimanBarang;
 
-    @ManyToOne
-    @JoinColumn(name = "id_permintaan_pengiriman")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_permintaan_pengiriman", referencedColumnName = "id_permintaan_pengiriman")
     private PermintaanPengiriman idPermintaanPengiriman;
 
-    @ManyToOne
-    @JoinColumn(name = "sku_barang")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sku_barang", referencedColumnName = "sku")
     private Barang skuBarang;
 
     @NotNull

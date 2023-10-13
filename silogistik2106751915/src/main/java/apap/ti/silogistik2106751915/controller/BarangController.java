@@ -41,7 +41,6 @@ public class BarangController {
         var barang = barangService.getBarangBySku(sku);
 
         model.addAttribute("barang", barang);
-
         return "view-barang";
     }
 
