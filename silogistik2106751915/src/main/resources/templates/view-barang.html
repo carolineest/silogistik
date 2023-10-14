@@ -60,7 +60,9 @@
               <tbody>
                 <tr th:each="gudang, iteratedList: ${barang.gudangBarang}">
                   <td th:text="${iteratedList.index + 1}"></td>
-                  <td th:text="${gudang.idGudang.namaGudang}"></td>
+                  <td>
+                    <a th:text="${gudang.idGudang.namaGudang}" th:href="@{'/gudang/' + ${gudang.idGudang.idGudang}}"></a>
+                  </td>
                   <td th:text="${gudang.idGudang.alamatGudang}"></td>
                   <td th:text="${gudang.stok}"></td>
                 </tr>

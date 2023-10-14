@@ -142,7 +142,7 @@ public class PermintaanPengirimanController {
         
         permintaanPengirimanService.cancelPermintaan(permintaanPengiriman);
 
-        model.addAttribute("id", idPermintaanPengiriman);
+        model.addAttribute("permintaanPengiriman", permintaanPengiriman);
 
         return "success-cancel-permintaan";
     }

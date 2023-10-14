@@ -39,15 +39,17 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Nama Gudang</th>
+                                    <th>Nama</th>
                                     <th>Alamat Gudang</th>
-                                    <th>Stok Barang</th>
+                                    <th>Stok</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr th:each="elem, iterStat : ${gudangBarang}">
                                     <td th:text="${iterStat.index + 1}"></td>
-                                    <td th:text="${elem.idGudang.namaGudang}"></td>
+                                    <td>
+                                        <a th:text="${elem.idGudang.namaGudang}" th:href="@{'/gudang/' + ${elem.idGudang.idGudang}}"></a>
+                                    </td>
                                     <td th:text="${elem.idGudang.alamatGudang}"></td>
                                     <td th:text="${elem.stok}"></td>
                                 </tr>

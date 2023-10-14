@@ -14,11 +14,10 @@
     <div class="card m-4 p-4">
       <div class="card-body">
         <div class="text-center">
-          <h2 th:text="'Permintaan dengan Id ' + ${id} + ' berhasil dicancel.'"></h2>
+          <h2 th:text="'Permintaan pengiriman dengan nomor pengiriman ' + ${permintaanPengiriman.nomorPengiriman} + ' berhasil dihapus.'"></h2>
         </div>
         <div class="text-center m-3">
-          <a type="button" class="btn btn-md btn-primary" href="/">Home</a>
-          <a type="button" class="btn btn-md btn-primary" href="/barang">Lihat Semua Barang</a>
+          <a type="button" class="btn btn-md btn-primary" href="/permintaan-pengiriman">Lihat Permintaan Pengiriman</a>
         </div>
       </div>
     </div>

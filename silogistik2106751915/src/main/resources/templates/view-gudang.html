@@ -14,7 +14,7 @@
     <div class="text-center pt-5">
       <h2 clasa>Detail Gudang</h2>
     </div>
-    <div class="text-center m-3">
+      <div class="text-center m-3">
         <a type="button" class="btn btn-primary btn-md" th:href="@{'/gudang/' + ${idGudang} + '/restock-barang'}">+ Restock Barang</a>
       </div>
     <div class="row justify-content-center">
@@ -35,16 +35,18 @@
                   <th>SKU</th>
                   <th>Merk</th>
                   <th>Stok</th>
-                  <th>Harga Barang</th>
+                  <th>Harga</th>
                 </tr>
               </thead>
               <tbody>
                 <tr th:each="barang, iteratedList: ${gudang.gudangBarang}">
                   <td th:text="${iteratedList.index + 1}"></td>
-                  <td th:text="${barang.skuBarang.sku}"></td>
+                  <td>
+                    <a th:text="${barang.skuBarang.sku}" th:href="@{'/barang/' + ${barang.skuBarang.sku}}"></a>
+                  </td>
                   <td th:text="${barang.skuBarang.merk}"></td>
                   <td th:text="${barang.stok}"></td>
-                  <td th:text="${barang.skuBarang.hargaBarang}"></td>
+                  <td th:text="'Rp' + ${barang.skuBarang.hargaBarang}"></td>
                 </tr>
               </tbody>
             </table>

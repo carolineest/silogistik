@@ -87,7 +87,7 @@ public class PermintaanPengirimanServiceImpl implements PermintaanPengirimanServ
 
         // Add the time to the request number.
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        String timeString = waktuPermintaan.format(formatter).replaceAll(":", "");
+        String timeString = waktuPermintaan.format(formatter);
         nomorPengiriman.append(timeString.substring(0, Math.min(timeString.length(), 8)));
 
         // Ensure the request number is unique (implement your own logic if needed)

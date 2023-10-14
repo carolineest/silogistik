@@ -66,10 +66,10 @@
                     </span>
                 </td>
                 <!-- Menampilkan harga -->
-                <td th:text="${barang.hargaBarang}"></td>
+                <td th:text="'Rp' + ${barang.hargaBarang}"></td>
                 <!-- Menampilkan action button -->
                 <td>
-                    <a type="button" class="btn btn-md btn-primary"
+                    <a type="button" class="btn btn-md btn-secondary"
                         th:href="@{'/barang/' + ${barang.sku}}">Detail</a>
                 </td>
             </tr>

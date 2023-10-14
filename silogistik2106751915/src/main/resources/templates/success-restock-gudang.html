@@ -17,8 +17,7 @@
                 <h2 th:text="'Selamat, Anda telah berhasil merestock gudang.'"></h2>
             </div>
             <div class="text-center m-3">
-                <a type="button" class="btn btn-md btn-primary" href="/">Home</a>
-                <a type="button" class="btn btn-md btn-primary" href="/gudang">Lihat Semua Gudang</a>
+                <a type="button" class="btn btn-md btn-primary" th:href="@{'/gudang/' + ${gudang.idGudang}}">Lihat Gudang</a>
             </div>
         </div>
     </div>
