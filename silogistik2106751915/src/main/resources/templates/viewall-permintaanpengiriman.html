@@ -31,44 +31,44 @@
           <!-- <a type="button" class="btn btn-md btn-primary" href="/">Home</a> -->
         </div>
         
-        <!-- Membuat table serta heading-nya -->
-        <table id="bukuTable" class="table">
-            <thead class = "table-header">
-                <tr>
-                    <th>#</th>
-                    <th>Waktu Permintaan</th>
-                    <th>Nomor Pengiriman</th>
-                    <th>Nama Penerima</th>
-                    <th>Alamat Penerima</th>
-                    <th>Tanggal Pengiriman</th>
-                    <th>Action</th>
+            <!-- Membuat table serta heading-nya -->
+            <table id="bukuTable" class="table">
+                <thead class = "table-header">
+                    <tr>
+                        <th>#</th>
+                        <th>Waktu Permintaan</th>
+                        <th>Nomor Pengiriman</th>
+                        <th>Nama Penerima</th>
+                        <th>Alamat Penerima</th>
+                        <th>Tanggal Pengiriman</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+
+
+                <!-- Mengambil buku -->
+                <tr th:each="elem, iteratedList: ${listPermintaanPengiriman}" th:if="${elem.isCancelled == null || !elem.isCancelled}">
+                        <!-- Menampilkan nomor -->
+                    <td th:text="${iteratedList.index + 1}"></td>
+                    <!-- Mengampilkan sku -->
+                    <td th:text="${elem.waktuPermintaan}"></td>
+                    <!-- Mengampilkan merk -->
+                    <td th:text="${elem.nomorPengiriman}"></td>
+                    <!-- Mengampilkan stok -->
+                    <td th:text="${elem.namaPenerima}"></td>
+                    <!-- Menampilkan harga -->
+                    <td th:text="${elem.alamatPenerima}"></td>
+                    <!-- Menampilkan action button -->
+                    <td th:text="${elem.tanggalPengiriman}"></td>
+                    <td>
+                        <a type="button" class="btn btn-md btn-primary"
+                            th:href="@{'/permintaan-pengiriman/' + ${elem.idPermintaanPengiriman}}">Detail</a>
+                    </td>
                 </tr>
-            </thead>
-            
-            <tbody>
-
-
-            <!-- Mengambil buku -->
-            <tr th:each="elem, iteratedList: ${listPermintaanPengiriman}">
-                <!-- Menampilkan nomor -->
-                <td th:text="${iteratedList.index + 1}"></td>
-                <!-- Mengampilkan sku -->
-                <td th:text="${elem.waktuPermintaan}"></td>
-                <!-- Mengampilkan merk -->
-                <td th:text="${elem.nomorPengiriman}"></td>
-                <!-- Mengampilkan stok -->
-                <td th:text="${elem.namaPenerima}"></td>
-                <!-- Menampilkan harga -->
-                <td th:text="${elem.alamatPenerima}"></td>
-                <!-- Menampilkan action button -->
-                <td th:text="${elem.tanggalPengiriman}"></td>
-                <td>
-                    <a type="button" class="btn btn-md btn-primary"
-                        th:href="@{'/permintaan-pengiriman/' + ${elem.idPermintaanPengiriman}}">Detail</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
     </div>
 
     <!-- Tautan ke file JavaScript DataTables -->

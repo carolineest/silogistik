@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import apap.ti.silogistik2106751915.repository.BarangDb;
+import apap.ti.silogistik2106751915.repository.PermintaanPengirimanBarangDb;
 import apap.ti.silogistik2106751915.repository.PermintaanPengirimanDb;
 import jakarta.transaction.Transactional;
 import apap.ti.silogistik2106751915.dto.request.CreatePermintaanPengirimanRequestDTO;
@@ -27,6 +28,9 @@ import java.util.Optional;
 public class PermintaanPengirimanServiceImpl implements PermintaanPengirimanService {
     @Autowired
     PermintaanPengirimanDb permintaanPengirimanDb;
+
+    @Autowired
+    PermintaanPengirimanBarangDb permintaanPengirimanBarangDb;
 
     @Autowired
     BarangDb barangDb;
@@ -92,7 +96,7 @@ public class PermintaanPengirimanServiceImpl implements PermintaanPengirimanServ
         return nomorPengiriman.toString();
     }
 
-
+    @Transactional
     @Override
     // @Transactional
     public void updatePermintaanPengiriman(PermintaanPengiriman existingPermintaanPengiriman, CreatePermintaanPengirimanRequestDTO createPermintaanPengirimanRequestDTO){
@@ -129,6 +133,7 @@ public class PermintaanPengirimanServiceImpl implements PermintaanPengirimanServ
             // permintaanPengirimanBarangList.add(permintaanPengirimanBarang);
             barang.getPermintaanPengirimanBarang().add(permintaanPengirimanBarang);
             existingPermintaanPengiriman.getPermintaanPengirimanBarang().add(permintaanPengirimanBarang);
+            permintaanPengirimanBarangDb.save(permintaanPengirimanBarang);
             totalBarang += elem.getStok(); // Update the total number of items
             System.out.println("******************" + permintaanPengirimanBarang);
         }
@@ -137,5 +142,11 @@ public class PermintaanPengirimanServiceImpl implements PermintaanPengirimanServ
 
         // Save updated object
         permintaanPengirimanDb.save(existingPermintaanPengiriman);
+    }
+
+    @Transactional
+    @Override
+    public void cancelPermintaan(PermintaanPengiriman permintaanPengiriman) {
+        permintaanPengiriman.setIsCancelled(true);
     }
 }

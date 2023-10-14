@@ -21,11 +21,11 @@ public class PermintaanPengirimanBarang {
     @Column(name = "id", nullable = false, unique = true)
     private BigInteger idPermintaanPengirimanBarang;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_permintaan_pengiriman", referencedColumnName = "id_permintaan_pengiriman")
     private PermintaanPengiriman idPermintaanPengiriman;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sku_barang", referencedColumnName = "sku")
     private Barang skuBarang;
 

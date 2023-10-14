@@ -8,6 +8,13 @@
     <title>Home</title>
 </head>
 
+<style>
+  .btn {
+    width: 250;
+    height: 200;
+  }
+</style>
+
 <body>
 <nav th:replace="~{fragments/navbar :: navbar}"></nav>
   <div class="container text-center">
@@ -23,22 +30,28 @@
         </div>
     <div class="row">
         <div class="col">
-            <a type="button" class="btn btn-primary m-2" href="/gudang">Gudang</a>
-            <a type="button" class="btn btn-primary m-2" href="/barang">Barang</a>
-            <a type="button" class="btn btn-primary m-2" href="">Permintaan Pengiriman</a>
-            <a type="button" class="btn btn-primary m-2" href="">Karyawan</a>
+            <a type="button" class="btn btn-primary m-2" href="/gudang">
+              <p>Gudang</p>
+              <h1 th:text="${jumlahGudang}"></h1>
+              <p>gudang</p>
+            </a>
+            <a type="button" class="btn btn-primary m-2" href="/barang">
+              <p>Barang</p>
+              <h1 th:text="${jumlahBarang}"></h1>
+              <p>barang</p>
+            </a>
+            <a type="button" class="btn btn-primary m-2" href="/permintaan-pengiriman">
+              <p>Permintaan Pengiriman</p>
+              <h1 th:text="${jumlahPermintaanPengiriman}"></h1>
+              <p>permintaan pengiriman</p>
+            </a>
+            <a type="button" class="btn btn-primary m-2" href="">
+              <p>Karyawan</p>
+              <h1 th:text="${jumlahKaryawan}"></h1>
+              <p>karyawan</p>
+            </a>
         </div>
     </div>
-    <!-- <div class="row">
-      <div class="col">
-        <a type="button" class="btn btn-primary m-2" href="/penerbit/create">Tambah Penerbit</a>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <a type="button" class="btn btn-primary m-2" href="/penulis/create">Tambah Penulis</a>
-      </div>
-    </div> -->
   </div>
 
 </body>

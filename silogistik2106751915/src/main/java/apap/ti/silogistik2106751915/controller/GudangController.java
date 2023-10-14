@@ -14,6 +14,10 @@ import org.springframework.validation.ObjectError;
 import apap.ti.silogistik2106751915.model.Barang;
 import apap.ti.silogistik2106751915.model.Gudang;
 import apap.ti.silogistik2106751915.model.GudangBarang;
+import apap.ti.silogistik2106751915.repository.BarangDb;
+import apap.ti.silogistik2106751915.repository.KaryawanDb;
+import apap.ti.silogistik2106751915.repository.GudangDb;
+import apap.ti.silogistik2106751915.repository.PermintaanPengirimanDb;
 import apap.ti.silogistik2106751915.service.BarangService;
 import apap.ti.silogistik2106751915.service.GudangBarangService;
 import apap.ti.silogistik2106751915.service.GudangService;
@@ -41,9 +45,25 @@ public class GudangController {
 
     @Autowired
     GudangMapper gudangMapper;
+
+    @Autowired
+    BarangDb barangDb;
+
+    @Autowired
+    GudangDb gudangDb;
+
+    @Autowired
+    KaryawanDb karyawanDb;
+
+    @Autowired
+    PermintaanPengirimanDb permintaanPengirimanDb;
     
     @GetMapping("/")
     public String home(Model model) {
+        model.addAttribute("jumlahGudang", gudangDb.count());
+        model.addAttribute("jumlahBarang", barangDb.count());
+        model.addAttribute("jumlahKaryawan", karyawanDb.count());
+        model.addAttribute("jumlahPermintaanPengiriman", permintaanPengirimanDb.count());
         return "home";
     }
 

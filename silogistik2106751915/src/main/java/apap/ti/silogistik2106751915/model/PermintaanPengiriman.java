@@ -25,11 +25,10 @@ public class PermintaanPengiriman {
     private BigInteger idPermintaanPengiriman;
 
     @Column(name = "nomor_pengiriman")
-    // @Column(name = "nomor_pengiriman", nullable = false)
-    private String nomorPengiriman; //1
+    private String nomorPengiriman;
 
     @Column(name = "is_cancelled")
-    private Boolean isCancelled = false; //2
+    private Boolean isCancelled;
 
     @NotNull
     @Column(name = "nama_penerima", nullable = false)
@@ -51,10 +50,8 @@ public class PermintaanPengiriman {
     @Column(name = "jenis_layanan", nullable = false)
     private int jenisLayanan;
 
-    // @NotNull
-    // @Column(name = "waktu_permintaan", nullable = false)
     @Column(name = "waktu_permintaan")
-    private LocalDateTime waktuPermintaan; //3
+    private LocalDateTime waktuPermintaan;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_karyawan", referencedColumnName = "idKaryawan")

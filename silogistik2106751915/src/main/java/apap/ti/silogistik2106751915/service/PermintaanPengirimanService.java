@@ -16,4 +16,6 @@ public interface PermintaanPengirimanService {
     String generateNomorPengiriman(int jumlahBarang, int jenisLayanan, LocalDateTime waktuPermintaan);
 
     void updatePermintaanPengiriman(PermintaanPengiriman existingPermintaanPengiriman, CreatePermintaanPengirimanRequestDTO createPermintaanPengirimanRequestDTO);
+
+    void cancelPermintaan(PermintaanPengiriman permintaanPengiriman);
 }

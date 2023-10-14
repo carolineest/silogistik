@@ -134,4 +134,16 @@ public class PermintaanPengirimanController {
 
         return "success-create-permintaan";
     }
+
+    @GetMapping("permintaan-pengiriman/{idPermintaanPengiriman}/cancel")
+    public String cancelPermintaan(@PathVariable("idPermintaanPengiriman") BigInteger idPermintaanPengiriman, Model model) {
+
+        var permintaanPengiriman = permintaanPengirimanService.getPermintaanPengirimanById(idPermintaanPengiriman);
+        
+        permintaanPengirimanService.cancelPermintaan(permintaanPengiriman);
+
+        model.addAttribute("id", idPermintaanPengiriman);
+
+        return "success-cancel-permintaan";
+    }
 }
