@@ -28,7 +28,7 @@
             <p class="card-text" th:text="${permintaanPengiriman.waktuPermintaan}"></p>
 
             <p class="card-text m-0"><b>Karyawan Bertugas</b></p>
-            <p class="card-text" th:text="${permintaanPengiriman.karyawan}"></p>
+            <p class="card-text" th:text="${permintaanPengiriman.karyawan.namaKaryawan}"></p>
 
             <p class="card-text m-0"><b>Waktu Pengiriman</b></p>
             <p class="card-text" th:text="${permintaanPengiriman.tanggalPengiriman}"></p>
@@ -40,7 +40,13 @@
             <p class="card-text" th:text="${permintaanPengiriman.alamatPenerima}"></p>
 
             <p class="card-text m-0"><b>Jenis Layanan</b></p>
-            <p class="card-text" th:text="${permintaanPengiriman.jenisLayanan}"></p>
+            <!-- <p class="card-text" th:text="${permintaanPengiriman.jenisLayanan}"></p> -->
+            <p class="card-text">
+              <span th:switch="${permintaanPengiriman.jenisLayanan}">
+                <span th:case="1">Same Day</span>
+                <span th:case="2">Kilat</span>
+                <span th:case="3">Reguler</span>
+                <span th:case="4">Hemat</span>
 
             <p class="card-text m-0"><b>Biaya Pengiriman</b></p>
             <p class="card-text" th:text="${permintaanPengiriman.biayaPengiriman}"></p>
@@ -57,11 +63,11 @@
                 </tr>
               </thead>
               <tbody>
-                <tr th:each="elem, iteratedList: ${permintaanPengiriman.permintaanPengirimanBarang}">
+                <tr th:each="barang, iteratedList: ${permintaanPengiriman.permintaanPengirimanBarang}">
                   <td th:text="${iteratedList.index + 1}"></td>
-                  <td th:text="${elem.skuBarang.sku}"></td>
-                  <td th:text="${elem.skuBarang.merk}"></td>
-                  <td th:text="${elem.kuantitasPesanan}"></td>
+                  <td th:text="${barang.skuBarang.sku}"></td>
+                  <td th:text="${barang.skuBarang.merk}"></td>
+                  <td th:text="${barang.kuantitasPesanan}"></td>
                   <td>
                     <span th:with="totalHarga=0">
                         <span th:each="item : ${permintaanPengiriman.permintaanPengirimanBarang}">

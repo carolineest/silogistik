@@ -16,15 +16,24 @@
         <div class="justify-content-center">
           <h2>Buat Permintaan Pengiriman</h2>
           <br>
-          <form th:action="@{/permintaan-pengiriman/tambah}" th:object="${permintaanPengirimanDTO}" method="POST">
+          <form th:action="@{/permintaan-pengiriman/tambah}" th:object="${createPermintaanPengirimanRequestDTO}" method="POST">
+            <input class="form-control" type="hidden" th:field="*{karyawan}" />
+            <!-- <input class="form-control" type="hidden" th:field="*{idKaryawan}" /> -->
             <label>Karyawan Bertugas:</label>
-            <select class="form-control" id="karyawan" name="karyawan" th:field="*{karyawan.idKaryawan}">
+            <!-- <select class="form-control" id="karyawan" name="karyawan" th:field="*{karyawan}">
                 <option value="" th:disabled="true" th:selected="true">--Pilih Karyawan--</option>
                 <option th:each="karyawan : ${listKaryawan}" 
-                        th:value="${karyawan.idKaryawan}" 
+                        th:value="${karyawan}" 
                         th:text="${karyawan.namaKaryawan}">
                 </option>
+            </select> -->
+            <select class="form-control" th:field="*{karyawan.idKaryawan}">
+              <option th:each="karyawan : ${listKaryawan}" 
+                      th:value="${karyawan.idKaryawan}" 
+                      th:text="${karyawan.namaKaryawan}">
+              </option>
             </select>
+
             <br> <br>
             
             Nama Penerima: <br>
@@ -51,6 +60,37 @@
             Biaya Pengiriman: <br>
             <input class="form-control" type="text" th:field="*{biayaPengiriman}" />
             <br><br>
+
+            <th class="d-flex justify-content-end">
+              <button class="btn btn-primary" type="submit" name="addRow">+ Tambah Barang</button>
+            </th>
+
+            <table class="table">
+
+                <thead>
+                    <th>#</th>
+                    <th>Barang</th>
+                    <th>Kuantitas</th>
+                </thead>
+
+                <tbody>
+                  <tr th:each="barang, iterationStatus : *{listBarang}">
+                    <td th:text="${iterationStatus.count}"></td>
+                      <td>
+                          <select th:field="*{listBarang[__${iterationStatus.index}__].sku}" class="form-control">
+                            <option value="">Pilih Barang</option>
+                            <th:block th:each="barangExisting : ${listBarangExisting}">
+                                <option th:value="${barangExisting.sku}" th:text="${barangExisting.merk}"></option>
+                            </th:block>
+                        </select>
+                      </td>
+                      <td>
+                          <input th:field="*{listBarang[__${iterationStatus.index}__].stok}"
+                              type="number" class="form-control" min="1" />
+                      </td>
+                  </tr>
+              </tbody>
+            </table>
 
             <button class="btn btn-primary" type="submit">Submit</button>
             <a class="btn btn-primary" href="/">Home</a>

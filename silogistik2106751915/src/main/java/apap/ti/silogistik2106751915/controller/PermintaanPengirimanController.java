@@ -1,6 +1,7 @@
 package apap.ti.silogistik2106751915.controller;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,15 +11,21 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 
 import apap.ti.silogistik2106751915.dto.BarangMapper;
 import apap.ti.silogistik2106751915.dto.PermintaanPengirimanMapper;
 import apap.ti.silogistik2106751915.dto.request.CreateBarangRequestDTO;
 import apap.ti.silogistik2106751915.dto.request.CreatePermintaanPengirimanRequestDTO;
+import apap.ti.silogistik2106751915.dto.request.RestockGudangRequestDTO;
+import apap.ti.silogistik2106751915.model.Barang;
 import apap.ti.silogistik2106751915.model.Karyawan;
 import apap.ti.silogistik2106751915.model.PermintaanPengiriman;
+import apap.ti.silogistik2106751915.service.BarangService;
 import apap.ti.silogistik2106751915.service.KaryawanService;
 import apap.ti.silogistik2106751915.service.PermintaanPengirimanService;
+import jakarta.validation.Valid;
 
 @Controller
 public class PermintaanPengirimanController {
@@ -30,6 +37,9 @@ public class PermintaanPengirimanController {
 
     @Autowired
     PermintaanPengirimanMapper permintaanPengirimanMapper;
+
+    @Autowired
+    BarangService barangService;
     
     @GetMapping("permintaan-pengiriman")
     public String listPermintaanPengiriman(Model model){
@@ -51,9 +61,11 @@ public class PermintaanPengirimanController {
 
     @GetMapping("permintaan-pengiriman/tambah")
     public String formAddPermintaanPengiriman(Model model) {
+        List<Barang> listBarangExisting = barangService.getAllBarang();
 
-        var permintaanPengirimanDTO = new CreatePermintaanPengirimanRequestDTO();
-        model.addAttribute("permintaanPengirimanDTO", permintaanPengirimanDTO);
+        var createPermintaanPengirimanRequestDTO = new CreatePermintaanPengirimanRequestDTO();
+        model.addAttribute("createPermintaanPengirimanRequestDTO", createPermintaanPengirimanRequestDTO);
+        model.addAttribute("listBarangExisting", listBarangExisting);
 
         List<Karyawan> listKaryawan = karyawanService.getAllKaryawan();
         model.addAttribute("listKaryawan", listKaryawan);
@@ -61,15 +73,64 @@ public class PermintaanPengirimanController {
         return "form-create-permintaanpengiriman";
     }
 
-    @PostMapping("permintaan-pengiriman/tambah")
-    public String addPermintaanPengiriman(@ModelAttribute CreatePermintaanPengirimanRequestDTO createPermintaanPengirimanRequestDTO, Model model) {
+    @PostMapping(value = "permintaan-pengiriman/tambah", params = {"addRow"})
+    public String addRowPermintaanPengiriman(@ModelAttribute CreatePermintaanPengirimanRequestDTO createPermintaanPengirimanRequestDTO, Model model) {
+        if (createPermintaanPengirimanRequestDTO.getListBarang() == null || createPermintaanPengirimanRequestDTO.getListBarang().size() == 0) {
+               createPermintaanPengirimanRequestDTO.setListBarang(new ArrayList<>());         
+            }
+
+        createPermintaanPengirimanRequestDTO.getListBarang().add(new CreatePermintaanPengirimanRequestDTO.BarangPermintaanDTO());
+
+        // var permintaanPengiriman = permintaanPengirimanMapper.CreatePermintaanPengirimanRequestDTOToPermintaanPengiriman(createPermintaanPengirimanRequestDTO);
+        // permintaanPengiriman = permintaanPengirimanService.createPermintaanPengiriman(permintaanPengiriman);
+        // model.addAttribute("permintaanPengiriman", createPermintaanPengirimanRequestDTO);
+
+        // BigInteger idKaryawan = createPermintaanPengirimanRequestDTO.getIdKaryawan();
+        // Karyawan karyawan = karyawanService.getKaryawanById(idKaryawan);
+        // createPermintaanPengirimanRequestDTO.setKaryawan(karyawan);
+
+        // Karyawan selectedKaryawan = karyawanService.getKaryawanById(createPermintaanPengirimanRequestDTO.getIdKaryawan());
+    
+        // // Set objek Karyawan ke dalam requestDTO
+        // createPermintaanPengirimanRequestDTO.setKaryawan(selectedKaryawan);
+        List<Karyawan> listKaryawan = karyawanService.getAllKaryawan();
+        model.addAttribute("listKaryawan", listKaryawan);
+
+        model.addAttribute("listBarangExisting", barangService.getAllBarang());
+        model.addAttribute("listPermintaanPengiriman", createPermintaanPengirimanRequestDTO.getListBarang());
+        model.addAttribute("createPermintaanPengirimanRequestDTO", createPermintaanPengirimanRequestDTO);
+
+        return "form-create-permintaanpengiriman";
+    }
+
+    @PostMapping(value = "permintaan-pengiriman/tambah")
+    public String addPermintaanPengiriman(@Valid
+        @ModelAttribute CreatePermintaanPengirimanRequestDTO createPermintaanPengirimanRequestDTO, BindingResult bindingResult,
+        Model model
+        ) {
+            if (bindingResult.hasErrors()) {
+            List<ObjectError> errors = bindingResult.getAllErrors();
+            StringBuilder errorMessage = new StringBuilder();
+            for (ObjectError error : errors) {
+                errorMessage.append(error.getDefaultMessage()).append("\n");
+            }
+            model.addAttribute("errorMessage", errorMessage.toString());
+            return "error-view";
+        }
+
+        // if (restockGudangRequestDTO.getListBarang() == null || restockGudangRequestDTO.getListBarang().isEmpty()) {
+        //     model.addAttribute("errorMessage", "Tidak ada barang untuk direstock");
+        //     return "error-view";            
+        // }
+
         var permintaanPengiriman = permintaanPengirimanMapper.CreatePermintaanPengirimanRequestDTOToPermintaanPengiriman(createPermintaanPengirimanRequestDTO);
-
-        //Memanggil Service createPenerbit
         permintaanPengiriman = permintaanPengirimanService.createPermintaanPengiriman(permintaanPengiriman);
-
-        //Menambah penerbit ke model thymeleaf
         model.addAttribute("permintaanPengiriman", createPermintaanPengirimanRequestDTO);
+
+        // gudangBarangService.updateGudangBarang(restockGudangRequestDTO, idGudang);
+        permintaanPengirimanService.updatePermintaanPengiriman(permintaanPengiriman, createPermintaanPengirimanRequestDTO);
+
+        model.addAttribute("permintaanPengiriman", permintaanPengirimanService);
 
         return "success-create-permintaan";
     }

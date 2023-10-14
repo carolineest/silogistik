@@ -108,6 +108,7 @@ public class GudangController {
             }
 
         restockGudangRequestDTO.getListBarang().add(new RestockGudangRequestDTO.BarangRestockDTO());
+        
         Gudang gudang = gudangService.getGudangById(idGudang);
         model.addAttribute("gudang", gudang);
 
