@@ -38,4 +38,6 @@ public class Barang {
 
     @OneToMany(mappedBy = "skuBarang")
     private List<PermintaanPengirimanBarang> permintaanPengirimanBarang;
+
+    private int totalStok;
 }

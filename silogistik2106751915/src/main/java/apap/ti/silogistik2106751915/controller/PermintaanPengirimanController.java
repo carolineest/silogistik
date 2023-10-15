@@ -1,6 +1,8 @@
 package apap.ti.silogistik2106751915.controller;
 
 import java.math.BigInteger;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -135,15 +137,34 @@ public class PermintaanPengirimanController {
         return "success-create-permintaan";
     }
 
+    // @GetMapping("permintaan-pengiriman/{idPermintaanPengiriman}/cancel")
+    // public String cancelPermintaan(@PathVariable("idPermintaanPengiriman") BigInteger idPermintaanPengiriman, Model model) {
+
+    //     var permintaanPengiriman = permintaanPengirimanService.getPermintaanPengirimanById(idPermintaanPengiriman);
+        
+    //     permintaanPengirimanService.cancelPermintaan(permintaanPengiriman);
+
+    //     model.addAttribute("permintaanPengiriman", permintaanPengiriman);
+
+    //     return "success-cancel-permintaan";
+    // }
+
     @GetMapping("permintaan-pengiriman/{idPermintaanPengiriman}/cancel")
     public String cancelPermintaan(@PathVariable("idPermintaanPengiriman") BigInteger idPermintaanPengiriman, Model model) {
 
         var permintaanPengiriman = permintaanPengirimanService.getPermintaanPengirimanById(idPermintaanPengiriman);
-        
-        permintaanPengirimanService.cancelPermintaan(permintaanPengiriman);
+        LocalDateTime waktuPermintaan = permintaanPengiriman.getWaktuPermintaan();
+        LocalDateTime waktuSekarang = LocalDateTime.now();
 
-        model.addAttribute("permintaanPengiriman", permintaanPengiriman);
+        Duration durasi = Duration.between(waktuPermintaan, waktuSekarang);
 
-        return "success-cancel-permintaan";
+        if(durasi.toHours() < 24) {
+            permintaanPengirimanService.cancelPermintaan(permintaanPengiriman);
+            model.addAttribute("permintaanPengiriman", permintaanPengiriman);
+            return "success-cancel-permintaan";
+        } else {
+            model.addAttribute("permintaanPengiriman", permintaanPengiriman);
+            return "fail-cancel-permintaan";
+        }
     }
 }

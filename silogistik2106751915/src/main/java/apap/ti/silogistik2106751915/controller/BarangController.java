@@ -1,6 +1,7 @@
 package apap.ti.silogistik2106751915.controller;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.validation.ObjectError;
 import apap.ti.silogistik2106751915.dto.BarangMapper;
 import apap.ti.silogistik2106751915.dto.request.CreateBarangRequestDTO;
 import apap.ti.silogistik2106751915.dto.request.UpdateBarangRequestDTO;
+import apap.ti.silogistik2106751915.model.Barang;
 import apap.ti.silogistik2106751915.service.BarangService;
 import jakarta.validation.Valid;
 
@@ -40,6 +42,15 @@ public class BarangController {
     public String detailBarang(@PathVariable("sku") String sku, Model model) {
         var barang = barangService.getBarangBySku(sku);
 
+        List<Integer> totalStok = new ArrayList<>();
+        for (Barang barangElem : barangService.getAllBarang()) {
+            totalStok.add(barangService.countStok(barangElem));
+        }
+        int totalAkhir = 0;
+        for (Integer totalElem : totalStok) {
+            totalAkhir += totalElem;
+        }
+        model.addAttribute("totalStok", totalAkhir);
         model.addAttribute("barang", barang);
         return "view-barang";
     }

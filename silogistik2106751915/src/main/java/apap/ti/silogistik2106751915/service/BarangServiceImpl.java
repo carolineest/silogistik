@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import apap.ti.silogistik2106751915.repository.BarangDb;
 import apap.ti.silogistik2106751915.model.Barang;
+import apap.ti.silogistik2106751915.model.GudangBarang;
 
 import java.util.List;
 
@@ -14,7 +15,21 @@ public class BarangServiceImpl implements BarangService {
     BarangDb barangDb;
 
     @Override
-    public List<Barang> getAllBarang() { return barangDb.findAll(); };
+    public List<Barang> getAllBarang() { 
+        for (Barang barang : barangDb.findAll()) {
+            barang.setTotalStok(countStok(barang));
+        }
+        return barangDb.findAll(); 
+    }
+
+    @Override
+    public int countStok(Barang barang) {
+        int total = 0;
+        for (GudangBarang gudangBarang : barang.getGudangBarang()) {
+            total += gudangBarang.getStok();
+        }
+        return total;
+    }
 
     @Override
     public Barang getBarangBySku(String sku) {

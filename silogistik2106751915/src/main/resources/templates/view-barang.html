@@ -36,13 +36,15 @@
                 <span th:case="4">Kosmetik</span>
                 <span th:case="5">Perlengkapan Rumah</span>
 
+                <!-- <p class="card-text m-0"><b>Total Stok</b></p>
+                <p class="card-text" th:with="totalStok=0">
+                    <span th:each="elem, iteratedItems: ${barang.gudangBarang}" 
+                          th:with="totalStok=${totalStok + elem.stok}"></span>
+                    <span th:text="${totalStok}"></span>
+                </p> -->
+
             <p class="card-text m-0"><b>Total Stok</b></p>
-            <!-- <p class="card-text" th:text="${barang.gudangBarang.stok}"></p> -->
-              <p class="card-text" th:with="totalStok=0">
-                  <span th:each="elem : ${barang.gudangBarang}" 
-                        th:with="totalStok=${totalStok + elem.stok}"></span>
-                  <span th:text="${totalStok}"></span>
-              </p>
+            <p class="card-text" th:text="${barang.totalStok}"></p>
 
             <p class="card-text m-0"><b>Harga</b></p>
             <p class="card-text" th:text="${barang.hargaBarang}"></p>

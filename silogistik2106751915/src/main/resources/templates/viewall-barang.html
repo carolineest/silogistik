@@ -57,14 +57,15 @@
                 <td th:text="${barang.merk}"></td>
                 <!-- Mengampilkan stok -->
                 <!-- <td th:text="${barang.gudangBarang.stok}"></td> -->
-                <td>
+                <!-- <td>
                     <span th:with="totalStok=0">
                         <span th:each="barang : ${barang.gudangBarang}">
                             <span th:with="totalStok=${totalStok + barang.stok}"></span>
                         </span>
-                        <span th:text="${totalStok}"></span>
                     </span>
-                </td>
+                    <span th:text="${totalStok}"></span>
+                </td> -->
+                <td th:text="${barang.totalStok}"></td>
                 <!-- Menampilkan harga -->
                 <td th:text="'Rp' + ${barang.hargaBarang}"></td>
                 <!-- Menampilkan action button -->

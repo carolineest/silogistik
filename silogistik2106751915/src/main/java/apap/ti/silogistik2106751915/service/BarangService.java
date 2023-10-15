@@ -13,4 +13,6 @@ public interface BarangService {
     String generateNewSku(int tipeBarang);
 
     Barang updateBarang(Barang barang);
+
+    int countStok(Barang barang);
 }
