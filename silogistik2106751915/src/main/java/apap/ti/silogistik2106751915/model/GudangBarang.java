@@ -21,7 +21,7 @@ public class GudangBarang {
     @Column(name = "id", nullable = false, unique = true)
     private BigInteger idGudangBarang;
 
-    @ManyToOne(fetch = FetchType.EAGER) //dari lazy
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_gudang", referencedColumnName = "id_gudang")
     private Gudang idGudang;
 

@@ -27,6 +27,44 @@ public class GudangBarangServiceImpl implements GudangBarangService {
     @Autowired
     BarangDb barangDb;
 
+    // @Override
+    // public void updateGudangBarang(RestockGudangRequestDTO restockGudangRequestDTO, BigInteger idGudang) {
+    //     for (RestockGudangRequestDTO.BarangRestockDTO barang : restockGudangRequestDTO.getListBarang()) {
+    //         String sku = barang.getSku();
+    //         int stok = barang.getStok();
+
+    //         Optional<Gudang> optionalGudang = gudangDb.findById(idGudang);
+    //         Optional<Barang> optionalBarang = barangDb.findBySku(sku);
+
+    //         if (optionalGudang.isPresent() && optionalBarang.isPresent()) {
+    //             Gudang gudang = optionalGudang.get();
+    //             Barang barangTemp = optionalBarang.get();
+
+    //             Optional<GudangBarang> existingGudangBarang = gudangBarangDb.getByIdGudangAndSkuBarang(gudang, barangTemp);
+
+    //             if (existingGudangBarang.isPresent()) {
+    //                 GudangBarang currGudangBarang = existingGudangBarang.get();
+    //                 currGudangBarang.setStok(currGudangBarang.getStok() + stok);
+    //                 gudangBarangDb.save(currGudangBarang);
+
+    //                  // Tambahkan gudangBarang ke list gudangBarang di gudang dan barang
+    //                 gudang.getGudangBarang().add(currGudangBarang);
+    //                 barangTemp.getGudangBarang().add(currGudangBarang);
+    //             } else {
+    //                 GudangBarang gudangBarangTemp = new GudangBarang();
+    //                 gudangBarangTemp.setIdGudang(gudang);
+    //                 gudangBarangTemp.setSkuBarang(barangTemp);
+    //                 gudangBarangTemp.setStok(stok);
+    //                 gudangBarangDb.save(gudangBarangTemp);
+
+    //                  // Tambahkan gudangBarang ke list gudangBarang di gudang dan barang
+    //                 gudang.getGudangBarang().add(gudangBarangTemp);
+    //                 barangTemp.getGudangBarang().add(gudangBarangTemp);
+    //             }
+    //         } 
+    //     }
+    // }
+
     @Override
     public void updateGudangBarang(RestockGudangRequestDTO restockGudangRequestDTO, BigInteger idGudang) {
         for (RestockGudangRequestDTO.BarangRestockDTO barang : restockGudangRequestDTO.getListBarang()) {
@@ -44,12 +82,8 @@ public class GudangBarangServiceImpl implements GudangBarangService {
 
                 if (existingGudangBarang.isPresent()) {
                     GudangBarang currGudangBarang = existingGudangBarang.get();
-                    currGudangBarang.setStok(currGudangBarang.getStok() + stok);
+                    currGudangBarang.setStok(stok); // Mengganti stok yang sudah ada dengan stok baru
                     gudangBarangDb.save(currGudangBarang);
-
-                     // Tambahkan gudangBarang ke list gudangBarang di gudang dan barang
-                    gudang.getGudangBarang().add(currGudangBarang);
-                    barangTemp.getGudangBarang().add(currGudangBarang);
                 } else {
                     GudangBarang gudangBarangTemp = new GudangBarang();
                     gudangBarangTemp.setIdGudang(gudang);
@@ -57,13 +91,13 @@ public class GudangBarangServiceImpl implements GudangBarangService {
                     gudangBarangTemp.setStok(stok);
                     gudangBarangDb.save(gudangBarangTemp);
 
-                     // Tambahkan gudangBarang ke list gudangBarang di gudang dan barang
-                    gudang.getGudangBarang().add(gudangBarangTemp);
-                    barangTemp.getGudangBarang().add(gudangBarangTemp);
-                }
+                // Tambahkan gudangBarang ke list gudangBarang di gudang dan barang
+                gudang.getGudangBarang().add(existingGudangBarang.orElse(gudangBarangTemp));
+                barangTemp.getGudangBarang().add(existingGudangBarang.orElse(gudangBarangTemp));
             } 
         }
     }
+}
 
     @Override
     public List<GudangBarang> getGudangBarangBySku(String sku){
