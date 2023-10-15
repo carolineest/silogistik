@@ -10,6 +10,4 @@ public interface GudangService {
     List<Gudang> getAllGudang();
 
     Gudang getGudangById(BigInteger idGudang);
-
-    // Gudang updateGudangBarang(Gudang gudangFromDTO);
 }

@@ -1,6 +1,5 @@
 package apap.ti.silogistik2106751915.controller;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,10 +70,8 @@ public class BarangController {
     public String addBarang(@ModelAttribute CreateBarangRequestDTO createBarangRequestDTO, Model model) {
         var barang = barangMapper.CreateBarangRequestDTOToBarang(createBarangRequestDTO);
 
-        //Memanggil Service createPenerbit
         barang = barangService.createBarang(barang);
 
-        //Menambah penerbit ke model thymeleaf
         model.addAttribute("barang", createBarangRequestDTO);
 
         return "success-create-barang";
@@ -94,7 +91,6 @@ public class BarangController {
     @PostMapping("barang/{sku}/ubah")
     public String updateBarang(@Valid @ModelAttribute UpdateBarangRequestDTO barangDTO, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            // Handle error validasi di sini
             List<ObjectError> errors = bindingResult.getAllErrors();
             StringBuilder errorMessage = new StringBuilder();
             for (ObjectError error : errors) {

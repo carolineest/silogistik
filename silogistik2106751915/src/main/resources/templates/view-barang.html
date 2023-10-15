@@ -12,47 +12,53 @@
   <nav th:replace="~{fragments/navbar :: navbar}"></nav>
   <div class="container">
     <div class="text-center pt-5">
-      <h2>Detail Barang</h2>
-    </div>
-    <div class="text-center m-3">
-      <a type="button" class="btn btn-primary btn-md" th:href="@{'/barang/' + ${barang.sku} + '/ubah'}">Ubah Barang</a>
+      <h2</h2>
     </div>
     <div class="row justify-content-center">
-      <div class="card" style="width: 30rem;">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h2><b>Detail Barang</b></h2>
+          <a type="button" class="btn btn-primary btn-md" th:href="@{'/barang/' + ${barang.sku} + '/ubah'}">Ubah Barang</a>
+      </div>
         <div class="card-body">
           <div>
-            <p class="card-text m-0"><b>Merk</b></p>
-            <p class="card-text" th:text="${barang.merk}"></p>
+            <table class="table table-borderless">
+              <tr>
+                  <td>Merk</td>
+                  <td th:text="': ' + ${barang.merk}"></td>
+              </tr>
+              <tr>
+                  <td>SKU</td>
+                  <td th:text="': ' + ${barang.sku}"></td>
+              </tr>
+              <tr>
+                <td>Tipe Barang</td>
+                <td>
+                    <span>: </span>
+                    <span th:switch="${barang.tipeBarang}">
+                        <span th:case="1">Produk Elektronik</span>
+                        <span th:case="2">Pakaian &amp; Aksesoris</span>
+                        <span th:case="3">Makanan &amp; Minuman</span>
+                        <span th:case="4">Kosmetik</span>
+                        <span th:case="5">Perlengkapan Rumah</span>
+                        <span th:case="*">Tipe Barang Tidak Dikenali</span>
+                    </span>
+                </td>
+            </tr>
+              <tr>
+                <td>Total Stok</td>
+                <td th:text="': ' + ${barang.totalStok}"></td>
+              </tr>
+              <tr>
+                <td>Harga</td>
+                <td th:text="': ' + 'Rp' + ${barang.hargaBarang}"></td>
+            </tr>
+            </table> 
 
-            <p class="card-text m-0"><b>SKU</b></p>
-            <p class="card-text" th:text="${barang.sku}"></p>
-
-            <p class="card-text m-0"><b>Tipe Barang</b></p>
-            <p class="card-text">
-              <span th:switch="${barang.tipeBarang}">
-                <span th:case="1">Produk Elektronik</span>
-                <span th:case="2">Pakaian & Aksesoris</span>
-                <span th:case="3">Makanan & Minuman</span>
-                <span th:case="4">Kosmetik</span>
-                <span th:case="5">Perlengkapan Rumah</span>
-
-                <!-- <p class="card-text m-0"><b>Total Stok</b></p>
-                <p class="card-text" th:with="totalStok=0">
-                    <span th:each="elem, iteratedItems: ${barang.gudangBarang}" 
-                          th:with="totalStok=${totalStok + elem.stok}"></span>
-                    <span th:text="${totalStok}"></span>
-                </p> -->
-
-            <p class="card-text m-0"><b>Total Stok</b></p>
-            <p class="card-text" th:text="${barang.totalStok}"></p>
-
-            <p class="card-text m-0"><b>Harga</b></p>
-            <p class="card-text" th:text="${barang.hargaBarang}"></p>
-
-            <p class="card-text m-0"><b>Daftar Gudang</b></p>
-            <table class="table table-striped">
-              <thead>
-                <tr>
+            <h5 class="card-text mt-2"><b>Daftar Gudang</b></h5>
+            <table class="table table-bordered">
+              <thead class="thead-dark table-dark">
+                  <tr class="text-center">
                   <th>#</th>
                   <th>Nama Gudang</th>
                   <th>Alamat Gudang</th>
@@ -60,7 +66,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr th:each="gudang, iteratedList: ${barang.gudangBarang}">
+                <tr class="text-center" th:each="gudang, iteratedList: ${barang.gudangBarang}">
                   <td th:text="${iteratedList.index + 1}"></td>
                   <td>
                     <a th:text="${gudang.idGudang.namaGudang}" th:href="@{'/gudang/' + ${gudang.idGudang.idGudang}}"></a>

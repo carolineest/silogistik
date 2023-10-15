@@ -15,6 +15,4 @@ public interface GudangBarangDb extends JpaRepository<GudangBarang, BigInteger> 
     Optional<GudangBarang> getByIdGudangAndSkuBarang(Gudang idGudang, Barang skuBarang);
 
     List<GudangBarang> getBySkuBarang(Barang skuBarang);
-
-    // Optional<GudangBarang> getByIdGudangAndSkuBarang(BigInteger idGudang, String sku);
 }

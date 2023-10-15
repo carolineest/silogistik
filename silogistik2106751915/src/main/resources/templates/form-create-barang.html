@@ -24,20 +24,22 @@
 <body>
   <nav th:replace="~{fragments/navbar :: navbar}"></nav>
   <div class="container">
-    <div class="card m-4 p-4">
+    <div class="text-center pt-5">
+      <h2></h2>
+    </div>
+    <div class="card">
+      <div class="card-header" style="text-align: center;">
+        <h2><b>Tambah Barang</b></h2>
+      </div>
       <div class="card-body">
         <div class="justify-content-center">
-          <h2>Tambah Barang </h2>
           <br>
           <form th:action="@{/barang/tambah}" th:object="${barangDTO}" method="POST">
-            Merk Barang: <br>
+            <b>Merk Barang: </b><br>
             <input class="form-control" type="text" th:field="*{merk}" />
             <br><br>
-            
-            <!-- Tipe Barang: <br> -->
-            <!-- <input class="form-control" type="number" th:field="*{tipeBarang}" />
-            <br><br> -->
-            <label for="tipeBarang">Tipe Barang:</label>
+
+            <label for="tipeBarang"><b>Tipe Barang:</b></label>
             <select class="form-control" id="tipeBarang" name="tipeBarang" th:field="*{tipeBarang}">
                 <option value="1">Produk Elektronik</option>
                 <option value="2">Pakaian & Aksesoris</option>
@@ -47,12 +49,13 @@
             </select>
             <br> <br>
 
-            Harga: <br>
-            <input class="form-control" type="text" th:field="*{hargaBarang}" />
+            <b>Harga: </b><br>
+            <input class="form-control" type="number" th:field="*{hargaBarang}" />
             <br><br>
-
-            <a class="btn btn-primary btn-danger" href="/barang">Batal</a>
-            <button class="btn btn-primary" type="submit">Submit</button>
+            <div class="text-center mt-3">
+              <a class="btn btn-primary btn-danger" href="/barang">Batal</a>
+              <button class="btn btn-primary btn-simpan" type="submit">Submit</button>
+            </div>
           </form>
         </div>
       </div>

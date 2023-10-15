@@ -62,10 +62,6 @@ public class GudangBarangServiceImpl implements GudangBarangService {
                     barangTemp.getGudangBarang().add(gudangBarangTemp);
                 }
             } 
-            // else {
-            //     // Handle kasus di mana Gudang atau Barang tidak ditemukan
-            //     // Misalnya, menampilkan pesan error atau tindakan lain yang sesuai
-            // }
         }
     }
 

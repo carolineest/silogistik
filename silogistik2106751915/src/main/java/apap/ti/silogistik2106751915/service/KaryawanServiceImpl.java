@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import apap.ti.silogistik2106751915.repository.KaryawanDb;
-import apap.ti.silogistik2106751915.model.Gudang;
 import apap.ti.silogistik2106751915.model.Karyawan;
 
 import java.math.BigInteger;

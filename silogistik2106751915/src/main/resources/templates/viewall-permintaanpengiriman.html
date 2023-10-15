@@ -17,6 +17,25 @@
     <object th:include="~{fragments/common :: js}" th:remove="tag"></object>
     <object th:include="~{fragments/common :: css}" th:remove="tag"></object>
     <title>View All Permintaan Pengiriman</title>
+
+    <!-- Tautan ke file JavaScript DataTables -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#bukuTable').DataTable({
+                "paging": true,
+                "order": [1, 'desc'],
+                "pageLength": 5, // Menampilkan 5 item per halaman ketika dibuka pertama kali
+                "lengthMenu": [5, 10, 20], // Pilihan jumlah entri per halaman
+                "columnDefs": [
+                    { "targets": 5, "orderable": false },
+                ]
+                });
+            }
+        );
+    </script>
 </head>
 
 <body>
@@ -52,8 +71,8 @@
                 <tr th:each="elem, iteratedList: ${listPermintaanPengiriman}" th:if="${elem.isCancelled == null || !elem.isCancelled}">
                         <!-- Menampilkan nomor -->
                     <td th:text="${iteratedList.index + 1}"></td>
-                    <!-- Mengampilkan sku -->
-                    <td th:text="${elem.waktuPermintaan}"></td>
+                    <!-- Mengampilkan waktu permintaan pengiriman -->
+                    <td th:text="${elem.formattedWaktuPermintaan}"></td>
                     <!-- Mengampilkan merk -->
                     <td th:text="${elem.nomorPengiriman}"></td>
                     <!-- Mengampilkan stok -->
@@ -61,7 +80,7 @@
                     <!-- Menampilkan harga -->
                     <td th:text="${elem.alamatPenerima}"></td>
                     <!-- Menampilkan action button -->
-                    <td th:text="${elem.tanggalPengiriman}"></td>
+                    <td th:text="${elem.formattedTanggalPengiriman}"></td>
                     <td>
                         <a type="button" class="btn btn-md btn-secondary"
                             th:href="@{'/permintaan-pengiriman/' + ${elem.idPermintaanPengiriman}}">Detail</a>
@@ -70,25 +89,6 @@
                 </tbody>
             </table>
     </div>
-
-    <!-- Tautan ke file JavaScript DataTables -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-
-    <script>
-        $(document).ready(function () {
-            $('#bukuTable').DataTable({
-                "paging": true,
-                "pageLength": 5, // Menampilkan 5 item per halaman ketika dibuka pertama kali
-                "lengthMenu": [5, 10, 20], // Pilihan jumlah entri per halaman
-                "columnDefs": [{
-                    "targets": 5, // Menetapkan target kolom (Action)
-                    "orderable": false // Menonaktifkan fitur pengurutan pada kolom target (Action)
-                    }]
-                });
-            }
-        );
-    </script>
 </body>
 
 </html>

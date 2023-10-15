@@ -11,22 +11,19 @@
 <body>
   <nav th:replace="~{fragments/navbar :: navbar}"></nav>
   <div class="container">
-    <div class="card m-4 p-4">
+    <div class="text-center pt-5">
+      <h6></h6>
+    </div>
+    <div class="card">
+      <div class="card-header" style="text-align: center;">
+        <h2><b>Buat Permintaan Pengiriman</b></h2>
+      </div>
       <div class="card-body">
         <div class="justify-content-center">
-          <h2>Buat Permintaan Pengiriman</h2>
-          <br>
           <form th:action="@{/permintaan-pengiriman/tambah}" th:object="${createPermintaanPengirimanRequestDTO}" method="POST">
             <input class="form-control" type="hidden" th:field="*{karyawan}" />
-            <!-- <input class="form-control" type="hidden" th:field="*{idKaryawan}" /> -->
             <label>Karyawan Bertugas:</label>
-            <!-- <select class="form-control" id="karyawan" name="karyawan" th:field="*{karyawan}">
-                <option value="" th:disabled="true" th:selected="true">--Pilih Karyawan--</option>
-                <option th:each="karyawan : ${listKaryawan}" 
-                        th:value="${karyawan}" 
-                        th:text="${karyawan.namaKaryawan}">
-                </option>
-            </select> -->
+
             <select class="form-control" th:field="*{karyawan.idKaryawan}">
               <option th:each="karyawan : ${listKaryawan}" 
                       th:value="${karyawan.idKaryawan}" 
@@ -65,16 +62,17 @@
               <button class="btn btn-primary" type="submit" name="addRow">+ Tambah Barang</button>
             </th>
 
-            <table class="table">
-
-                <thead>
+            <table class="table table-bordered mt-2">
+              <thead class="thead-dark table-dark">
+                  <tr class="text-center">
                     <th>#</th>
                     <th>Barang</th>
                     <th>Kuantitas</th>
+                  </tr>
                 </thead>
 
                 <tbody>
-                  <tr th:each="barang, iterationStatus : *{listBarang}">
+                  <tr class="text-center" th:each="barang, iterationStatus : *{listBarang}">
                     <td th:text="${iterationStatus.count}"></td>
                       <td>
                           <select th:field="*{listBarang[__${iterationStatus.index}__].sku}" class="form-control">
@@ -91,8 +89,10 @@
                   </tr>
               </tbody>
             </table>
+            <div class="text-center mt-3">
             <a class="btn btn-primary btn-danger" th:href="@{'/permintaan-pengiriman}">Batal</a>
             <button class="btn btn-primary btn-simpan" type="submit">Submit</button>
+          </div>
           </form>
         </div>
       </div>

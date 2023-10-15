@@ -32,4 +32,7 @@ public class PermintaanPengirimanBarang {
     @NotNull
     @Column(name = "kuantitas_pesanan")
     private int kuantitasPesanan;
+
+    @Transient
+    private BigInteger totalHarga;
 }

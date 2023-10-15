@@ -59,4 +59,11 @@ public class PermintaanPengiriman {
 
     @OneToMany(mappedBy = "idPermintaanPengiriman")
     private List<PermintaanPengirimanBarang> permintaanPengirimanBarang;
+
+    // Properti yang tidak akan disimpan ke database
+    @Transient
+    private String formattedWaktuPermintaan;
+
+    @Transient
+    private String formattedTanggalPengiriman;
 }

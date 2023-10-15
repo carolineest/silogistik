@@ -12,8 +12,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigInteger;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -39,8 +37,6 @@ public class CreatePermintaanPengirimanRequestDTO {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date tanggalPengiriman;
-
-    // private BigInteger idKaryawan;
 
     private Karyawan karyawan;
 

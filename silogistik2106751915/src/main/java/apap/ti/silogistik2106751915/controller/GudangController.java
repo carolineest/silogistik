@@ -13,7 +13,6 @@ import org.springframework.validation.ObjectError;
 
 import apap.ti.silogistik2106751915.model.Barang;
 import apap.ti.silogistik2106751915.model.Gudang;
-import apap.ti.silogistik2106751915.model.GudangBarang;
 import apap.ti.silogistik2106751915.repository.BarangDb;
 import apap.ti.silogistik2106751915.repository.KaryawanDb;
 import apap.ti.silogistik2106751915.repository.GudangDb;
@@ -22,14 +21,13 @@ import apap.ti.silogistik2106751915.service.BarangService;
 import apap.ti.silogistik2106751915.service.GudangBarangService;
 import apap.ti.silogistik2106751915.service.GudangService;
 import jakarta.validation.Valid;
-import apap.ti.silogistik2106751915.dto.BarangMapper;
 import apap.ti.silogistik2106751915.dto.GudangMapper;
-import apap.ti.silogistik2106751915.dto.request.CreateBarangRequestDTO;
-import apap.ti.silogistik2106751915.dto.request.CreateGudangRequestDTO;
 import apap.ti.silogistik2106751915.dto.request.RestockGudangRequestDTO;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -73,8 +71,6 @@ public class GudangController {
 
         model.addAttribute("listGudang", listGudang);
 
-        // model.addAttribute("activePage", "gudang");
-
         return "viewall-gudang";
     }
 
@@ -84,24 +80,8 @@ public class GudangController {
 
         model.addAttribute("gudang", gudang);
 
-        // model.addAttribute("activePage", "gudang");
-
         return "view-gudang";
     }
-
-    // @GetMapping("/gudang/{idGudang}/restock-barang")
-    // public String restockGudang(@PathVariable("idGudang") BigInteger idGudang, Model model) {
-    //     var gudang = gudangService.getGudangById(idGudang);
-    //     var gudangDTO = gudangMapper.GudangTocreateGudangRequestDTO(gudang);
-
-    //     System.out.println(gudang);
-    //     model.addAttribute("gudang", gudang);
-    //     model.addAttribute("gudangDTO", gudangDTO);
-
-    //     // model.addAttribute("activePage", "gudang");
-
-    //     return "form-restock-barang";
-    // }
 
     @GetMapping("/gudang/{idGudang}/restock-barang")
     public String restockGudang(@PathVariable("idGudang") BigInteger idGudang, Model model) {
@@ -154,11 +134,6 @@ public class GudangController {
             return "error-view";
         }
 
-        // if (restockGudangRequestDTO.getListBarang() == null || restockGudangRequestDTO.getListBarang().isEmpty()) {
-        //     model.addAttribute("errorMessage", "Tidak ada barang untuk direstock");
-        //     return "error-view";            
-        // }
-
         gudangBarangService.updateGudangBarang(restockGudangRequestDTO, idGudang);
 
         model.addAttribute("gudang", gudangService.getGudangById(idGudang));
@@ -169,27 +144,16 @@ public class GudangController {
     @GetMapping("/gudang/cari-barang")
     public String cariBarang(@RequestParam(value = "barang", required = false) String skuBarang, Model model) {
         var listBarang = barangService.getAllBarang();
+
+        Collections.sort(listBarang, Comparator.comparing(Barang::getMerk));
+
         model.addAttribute("listBarang", listBarang);
 
         if (skuBarang != null){
             var gudangBarang = gudangBarangService.getGudangBarangBySku(skuBarang);
             model.addAttribute("gudangBarang", gudangBarang);
-            System.out.println("*************" + gudangBarang);
         }
 
         return "view-cari-barang";
     }
-
-    // @GetMapping("/gudang/cari-barang/{sku}")
-    // public String cariBarangShow(@PathVariable("sku") String sku, Model model) {
-    //     var listBarang = barangService.getAllBarang();
-
-    //     model.addAttribute("listBarang", listBarang);
-
-    //     var gudangBarang = gudangBarangService.getGudangBarangBySku(sku);
-
-    //     model.addAttribute("gudangBarang", gudangBarang);
-
-    //     return "form-restock-barang";
-    // }
 }

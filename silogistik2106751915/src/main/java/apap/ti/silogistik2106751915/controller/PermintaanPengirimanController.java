@@ -3,6 +3,8 @@ package apap.ti.silogistik2106751915.controller;
 import java.math.BigInteger;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,14 +18,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 
-import apap.ti.silogistik2106751915.dto.BarangMapper;
 import apap.ti.silogistik2106751915.dto.PermintaanPengirimanMapper;
-import apap.ti.silogistik2106751915.dto.request.CreateBarangRequestDTO;
 import apap.ti.silogistik2106751915.dto.request.CreatePermintaanPengirimanRequestDTO;
-import apap.ti.silogistik2106751915.dto.request.RestockGudangRequestDTO;
 import apap.ti.silogistik2106751915.model.Barang;
 import apap.ti.silogistik2106751915.model.Karyawan;
 import apap.ti.silogistik2106751915.model.PermintaanPengiriman;
+import apap.ti.silogistik2106751915.model.PermintaanPengirimanBarang;
 import apap.ti.silogistik2106751915.service.BarangService;
 import apap.ti.silogistik2106751915.service.KaryawanService;
 import apap.ti.silogistik2106751915.service.PermintaanPengirimanService;
@@ -47,6 +47,18 @@ public class PermintaanPengirimanController {
     public String listPermintaanPengiriman(Model model){
         var listPermintaanPengiriman = permintaanPengirimanService.getAllPermintaanPengiriman();
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy, HH:mm");
+        DateTimeFormatter tanggalFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        for (PermintaanPengiriman permintaan : listPermintaanPengiriman) {
+            String formattedDateTime = permintaan.getWaktuPermintaan().format(formatter);
+            permintaan.setFormattedWaktuPermintaan(formattedDateTime);
+
+            LocalDateTime localDateTime = permintaan.getTanggalPengiriman().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+            String formattedDate = localDateTime.format(tanggalFormatter);
+            permintaan.setFormattedTanggalPengiriman(formattedDate);
+        }
+
         model.addAttribute("listPermintaanPengiriman", listPermintaanPengiriman);
 
         return "viewall-permintaanpengiriman";
@@ -55,6 +67,30 @@ public class PermintaanPengirimanController {
     @GetMapping("permintaan-pengiriman/{idPermintaanPengiriman}")
     public String detailPermintaanPengiriman(@PathVariable("idPermintaanPengiriman") BigInteger idPermintaanPengiriman, Model model) {
         var permintaanPengiriman = permintaanPengirimanService.getPermintaanPengirimanById(idPermintaanPengiriman);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy, HH:mm");
+        DateTimeFormatter tanggalFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        String formattedDateTime = permintaanPengiriman.getWaktuPermintaan().format(formatter);
+        permintaanPengiriman.setFormattedWaktuPermintaan(formattedDateTime);
+
+        LocalDateTime localDateTime = permintaanPengiriman.getTanggalPengiriman().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        String formattedDate = localDateTime.format(tanggalFormatter);
+        permintaanPengiriman.setFormattedTanggalPengiriman(formattedDate);
+
+        BigInteger totalHarga = BigInteger.ZERO; // Total harga permintaan pengiriman
+
+        // Iterasi melalui setiap PermintaanPengirimanBarang
+        for (PermintaanPengirimanBarang barang : permintaanPengiriman.getPermintaanPengirimanBarang()) {
+            Barang skuBarang = barang.getSkuBarang();
+            BigInteger hargaBarang = skuBarang.getHargaBarang();
+            int kuantitasPesanan = barang.getKuantitasPesanan();
+
+            BigInteger totalHargaBarang = hargaBarang.multiply(BigInteger.valueOf(kuantitasPesanan));
+            barang.setTotalHarga(totalHargaBarang); // Set total harga per barang
+
+            totalHarga = totalHarga.add(totalHargaBarang);
+        }
 
         model.addAttribute("permintaanPengiriman", permintaanPengiriman);
 
@@ -83,18 +119,6 @@ public class PermintaanPengirimanController {
 
         createPermintaanPengirimanRequestDTO.getListBarang().add(new CreatePermintaanPengirimanRequestDTO.BarangPermintaanDTO());
 
-        // var permintaanPengiriman = permintaanPengirimanMapper.CreatePermintaanPengirimanRequestDTOToPermintaanPengiriman(createPermintaanPengirimanRequestDTO);
-        // permintaanPengiriman = permintaanPengirimanService.createPermintaanPengiriman(permintaanPengiriman);
-        // model.addAttribute("permintaanPengiriman", createPermintaanPengirimanRequestDTO);
-
-        // BigInteger idKaryawan = createPermintaanPengirimanRequestDTO.getIdKaryawan();
-        // Karyawan karyawan = karyawanService.getKaryawanById(idKaryawan);
-        // createPermintaanPengirimanRequestDTO.setKaryawan(karyawan);
-
-        // Karyawan selectedKaryawan = karyawanService.getKaryawanById(createPermintaanPengirimanRequestDTO.getIdKaryawan());
-    
-        // // Set objek Karyawan ke dalam requestDTO
-        // createPermintaanPengirimanRequestDTO.setKaryawan(selectedKaryawan);
         List<Karyawan> listKaryawan = karyawanService.getAllKaryawan();
         model.addAttribute("listKaryawan", listKaryawan);
 
@@ -120,34 +144,16 @@ public class PermintaanPengirimanController {
             return "error-view";
         }
 
-        // if (restockGudangRequestDTO.getListBarang() == null || restockGudangRequestDTO.getListBarang().isEmpty()) {
-        //     model.addAttribute("errorMessage", "Tidak ada barang untuk direstock");
-        //     return "error-view";            
-        // }
-
         var permintaanPengiriman = permintaanPengirimanMapper.CreatePermintaanPengirimanRequestDTOToPermintaanPengiriman(createPermintaanPengirimanRequestDTO);
         permintaanPengiriman = permintaanPengirimanService.createPermintaanPengiriman(permintaanPengiriman);
         model.addAttribute("permintaanPengiriman", createPermintaanPengirimanRequestDTO);
 
-        // gudangBarangService.updateGudangBarang(restockGudangRequestDTO, idGudang);
         permintaanPengirimanService.updatePermintaanPengiriman(permintaanPengiriman, createPermintaanPengirimanRequestDTO);
 
         model.addAttribute("permintaanPengiriman", permintaanPengirimanService);
 
         return "success-create-permintaan";
     }
-
-    // @GetMapping("permintaan-pengiriman/{idPermintaanPengiriman}/cancel")
-    // public String cancelPermintaan(@PathVariable("idPermintaanPengiriman") BigInteger idPermintaanPengiriman, Model model) {
-
-    //     var permintaanPengiriman = permintaanPengirimanService.getPermintaanPengirimanById(idPermintaanPengiriman);
-        
-    //     permintaanPengirimanService.cancelPermintaan(permintaanPengiriman);
-
-    //     model.addAttribute("permintaanPengiriman", permintaanPengiriman);
-
-    //     return "success-cancel-permintaan";
-    // }
 
     @GetMapping("permintaan-pengiriman/{idPermintaanPengiriman}/cancel")
     public String cancelPermintaan(@PathVariable("idPermintaanPengiriman") BigInteger idPermintaanPengiriman, Model model) {

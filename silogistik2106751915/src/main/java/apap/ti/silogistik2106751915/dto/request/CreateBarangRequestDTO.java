@@ -23,6 +23,4 @@ public class CreateBarangRequestDTO {
     @NotNull(message = "Harga Barang harus diisi.")
     @Positive(message = "Harga Barang harus bernilai positif.")
     private BigInteger hargaBarang;
-
-    // private List<GudangBarang> listGudangBarang;
 }
